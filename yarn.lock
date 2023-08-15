@@ -2740,6 +2740,11 @@ csstype@^3.0.2:
   resolved "https://registry.npmjs.org/csstype/-/csstype-3.1.2.tgz"
   integrity sha512-I7K1Uu0MBPzaFKg4nI5Q7Vs2t+3gWWW648spaF+Rg7pI9ds18Ugn+lvg4SHczUdKlHI5LWBXyqfS8+DufyBsgQ==
 
+cube-scramble.js@^1.0.5:
+  version "1.0.5"
+  resolved "https://registry.npmjs.org/cube-scramble.js/-/cube-scramble.js-1.0.5.tgz"
+  integrity sha512-MDCRFa7bfrepfLwqviuIB5hVZ1WZZ/ESNfT8gkoYhoPL7Eo12rQe+Mv9CC6FIcIaIbnPEwA+ZtOrxamy4XXZAw==
+
 dayjs@^1.8.15:
   version "1.11.9"
   resolved "https://registry.npmjs.org/dayjs/-/dayjs-1.11.9.tgz"
