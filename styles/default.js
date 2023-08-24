@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 
-const defaultstyles = StyleSheet.create({
+export let styles = {
     main: {
         backgroundColor: "#212529",
         height: "100%",
@@ -17,7 +17,9 @@ const defaultstyles = StyleSheet.create({
         textAlign: 'center',
         paddingTop: 150,
     }
-})
+};
+
+const defaultstyles = StyleSheet.create(styles)
 
 
 export default defaultstyles;
