@@ -35,6 +35,5 @@ const style = StyleSheet.create({
   }
 })
 
-console.log(cubesrambler.scramble("3x3"))
 
 export default App;

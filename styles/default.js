@@ -16,7 +16,7 @@ export let styles = {
     header: {
         textAlign: 'center',
         paddingTop: 150,
-    }
+    },
 };
 
 const defaultstyles = StyleSheet.create(styles)

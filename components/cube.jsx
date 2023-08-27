@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import { View } from 'react-native';
 import * as THREE from 'three';
 import { Renderer } from 'expo-three';
@@ -7,10 +7,10 @@ import * as scrambler from 'cube-scramble.js';
 import { styles } from "../styles/default"
 
 const Cube = (props) => {
-  const [scramble, setscramble ] = useState(null);
-  useEffect(() => {
-    setscramble(props.scramble);
-  }, [props]);
+  // const [scramble, setscramble] = useState(props.scramble);
+  const scramble = useRef(props.scramble)
+  let sequence = scramble.current;
+  let inScramble = useRef(true);
 
   const onContextCreate = async (gl) => {
     let scene, camera, renderer, controls, rollObject, group;
@@ -45,10 +45,8 @@ const Cube = (props) => {
     const cPositions = [-1,0,1];
     
     const step = Math.PI / 100;
-    const cubes = [];
+    var cubes = [];
     const type = '3x3';
-    let sequence = scramble;
-    console.log(sequence);
 
     const vertexShader = `
       varying vec2 vUv;
@@ -93,6 +91,7 @@ const Cube = (props) => {
     }).reduce((acc, [key, val]) => ({ ...acc, [key]: createMaterial(val) }), {});
 
     function init() {
+      inScramble.current = true;
       const [innerWidth, innerHeight] = [gl.drawingBufferWidth, gl.drawingBufferHeight];
       scene = new THREE.Scene();
 
@@ -195,8 +194,11 @@ const Cube = (props) => {
       if (!rollObject) return;
       if (rollObject.active) rollObject.rollFace();
       else {
-        const move = sequence.shift();
-        if (move === undefined) return;
+        // console.log(sequence)
+        const move = sequence.shift()
+        if (move === undefined) {
+          return;
+        };
         const baseMove = move.replace(/['2w]/g, '');
         const layer = rotateConditions[baseMove];
         if (move.includes('w')) layer.value = wideLayerFaces(layer.value, /^3.w/.test(move) ? 3 : 2);
@@ -205,21 +207,33 @@ const Cube = (props) => {
     }
 
     function render() {
+      if(sequence.length < 1 && !inScramble.current) {
+        sequence = scramble.current;
+        cubes = [];
+        init();
+      }
       requestAnimationFrame(render);
       update();
       renderer.render(scene, camera);
       gl.endFrameEXP();
     }
+
     init();
     render();
   };
+
+  useEffect(() => {
+      scramble.current = props.scramble;
+      inScramble.current = false;
+  }, [props.scramble]);
+
 
   return (
     <View>
       <GLView
         onContextCreate={onContextCreate}
         // set height and width of GLView
-        style={{ width: 400, height: 400 }}
+        style={{ width: 400, height: 400}}
       />
     </View>
   );
