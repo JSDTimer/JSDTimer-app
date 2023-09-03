@@ -11,7 +11,7 @@ export let styles = {
         color: "#f8f9fa",
     },
     h1: {
-        fontSize: 50
+        fontSize: 60
     },
     header: {
         textAlign: 'center',

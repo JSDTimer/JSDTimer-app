@@ -3,7 +3,6 @@ import { View } from 'react-native';
 import * as THREE from 'three';
 import { Renderer } from 'expo-three';
 import { GLView } from 'expo-gl';
-import * as scrambler from 'cube-scramble.js';
 import { styles } from "../styles/default"
 
 const Cube = (props) => {
@@ -229,7 +228,7 @@ const Cube = (props) => {
 
 
   return (
-    <View>
+    <View style={{flex: 5}}>
       <GLView
         onContextCreate={onContextCreate}
         // set height and width of GLView

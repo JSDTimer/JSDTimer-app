@@ -1,10 +1,12 @@
 import React from 'react';
 import {SafeAreaView ,StyleSheet ,StatusBar ,Platform} from 'react-native';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import Icon from 'react-native-vector-icons/Ionicons';
 import defaultstyles from '../styles/default';
 
 
-const Nav = () => {
+const Nav = (props) => {
+    let navigation = props.navigation;
+
     return (
         <SafeAreaView style={styles.container}>
         {Platform.OS === 'android' ? (
@@ -23,7 +25,7 @@ const Nav = () => {
             >
             </StatusBar>}
             <Icon name="menu" size={35} color="#FFFFFF" style={styles.icon}></Icon>
-            <Icon name="settings" size={35} color="#FFFFFF" style={styles.icon}></Icon>
+            <Icon name="settings" size={35} color="#FFFFFF" style={styles.icon} onPress={() => { navigation.navigate("Settings")}}></Icon>
         </SafeAreaView>
     );
 }
