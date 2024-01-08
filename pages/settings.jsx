@@ -39,7 +39,7 @@ const Settings = (props) => {
         <View style={defaultstyles.main}>
             <SettingsNav navigation={navigation}></SettingsNav>
             <ScrollView>
-                <Text style={[iOSUIKit.footnoteEmphasizedWhite]}>THIS IS A SETTINGS PAGE RAAAAAAAAAAAAA</Text>
+                <Text style={[iOSUIKit.footnoteEmphasizedWhite, styles.header]}>THIS THE SETTINGS PAGE</Text>
             </ScrollView>
         </View>
     )
@@ -49,6 +49,9 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         justifyContent: "space-between"
+    },
+    header: {
+        margin: 30,
     },
     icon: {
         margin: 30,

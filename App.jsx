@@ -18,6 +18,7 @@ import Settings from './pages/settings';
 
 var Stack = createNativeStackNavigator();
 
+//Main page
 const Main = (props) => {
   const [scramble, setscramble] = useState(cubesrambler.scramble("3x3"))
 
