@@ -6,6 +6,12 @@ import defaultstyles from '../styles/default';
 
 const Nav = (props) => {
     let navigation = props.navigation;
+    let setReset = props.funcr;
+
+    function startNavigation(location) {
+        setReset(true)
+        navigation.navigate("Settings")
+    }
 
     return (
         <SafeAreaView style={styles.container}>
@@ -25,7 +31,7 @@ const Nav = (props) => {
             >
             </StatusBar>}
             <Icon name="menu" size={35} color="#FFFFFF" style={styles.icon}></Icon>
-            <Icon name="settings" size={35} color="#FFFFFF" style={styles.icon} onPress={() => { navigation.navigate("Settings")}}></Icon>
+            <Icon name="settings" size={35} color="#FFFFFF" style={styles.icon} onPress={startNavigation}></Icon>
         </SafeAreaView>
     );
 }

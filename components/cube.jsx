@@ -4,10 +4,12 @@ import * as THREE from 'three';
 import { Renderer } from 'expo-three';
 import { GLView } from 'expo-gl';
 import { styles } from "../styles/default"
+import * as RootNavigation from "../global/rootNavigation"
 
 const Cube = (props) => {
   // const [scramble, setscramble] = useState(props.scramble);
   const scramble = useRef(props.scramble)
+  const reset = useRef(props.reset)
   let sequence = scramble.current;
   let inScramble = useRef(true);
 
@@ -90,6 +92,7 @@ const Cube = (props) => {
     }).reduce((acc, [key, val]) => ({ ...acc, [key]: createMaterial(val) }), {});
 
     function init() {
+      console.log("Called")
       inScramble.current = true;
       const [innerWidth, innerHeight] = [gl.drawingBufferWidth, gl.drawingBufferHeight];
       scene = new THREE.Scene();
@@ -206,11 +209,21 @@ const Cube = (props) => {
     }
 
     function render() {
-      if(sequence.length < 1 && !inScramble.current) {
+      if(sequence.length < 1 && !inScramble) {
         sequence = scramble.current;
         cubes = [];
         init();
       }
+
+      if(RootNavigation.getCurrentRoute().name != "Main") {
+        sequence = []
+        cubes = []
+        init()
+        return;
+      }
+
+      console.log("Root Navigation: " + RootNavigation.getCurrentRoute().name)
+
       requestAnimationFrame(render);
       update();
       renderer.render(scene, camera);
