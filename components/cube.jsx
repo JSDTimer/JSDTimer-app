@@ -10,11 +10,12 @@ const Cube = (props) => {
   // const [scramble, setscramble] = useState(props.scramble);
   const scramble = useRef(props.scramble)
   const reset = useRef(props.reset)
-  let sequence = scramble.current;
+  let sequence = [...scramble.current];
   let inScramble = useRef(true);
 
   const onContextCreate = async (gl) => {
     let scene, camera, renderer, controls, rollObject, group;
+    sequence = [...scramble.current];
 
     const rotateDirections = { 
       L: 1,
@@ -210,24 +211,24 @@ const Cube = (props) => {
 
     function render() {
       if(sequence.length < 1 && !inScramble) {
-        sequence = scramble.current;
+        sequence = [...scramble.current];
         cubes = [];
         init();
       }
 
       if(RootNavigation.getCurrentRoute().name != "Main") {
-        sequence = []
-        cubes = []
-        init()
-        return;
+        sequence = [...scramble.current];
       }
 
-      console.log("Root Navigation: " + RootNavigation.getCurrentRoute().name)
+      // console.log(sequence)
+      // console.log("Root Navigation: " + RootNavigation.getCurrentRoute().name)
 
-      requestAnimationFrame(render);
-      update();
-      renderer.render(scene, camera);
-      gl.endFrameEXP();
+      if(RootNavigation.getCurrentRoute().name === "Main") {
+        requestAnimationFrame(render);
+        update();
+        renderer.render(scene, camera);
+        gl.endFrameEXP();
+      }
     }
 
     init();
