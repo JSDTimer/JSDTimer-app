@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, Button} from 'react-native';
 import {NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import { iOSUIKit } from 'react-native-typography'
@@ -32,9 +32,9 @@ const Main = (props) => {
     <View style={[defaultstyles.main, style.container]}>
       <Nav navigation={navigation} funcr={setReset}></Nav>
       <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>{scramble.join(" ")}</Text>
-      {/* <Timer onPress={() => setscramble(cubesrambler.scramble("3x3"))}></Timer> */}
-      <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header, {flex: 1}]} onPress={() => setscramble(cubesrambler.scramble("3x3"))}>0:00:00</Text>
+      <Timer></Timer>
       <Cube scramble={scramble} reset={reset} nav={navigation}></Cube>
+      <Button onPress={() => setscramble(cubesrambler.scramble("3x3"))} title="New Scramble 🎉"></Button>
     </View>
   )
 }
@@ -67,6 +67,9 @@ const style = StyleSheet.create({
   container: {
     flexDirection: "column"
   },
+  scrambleButton: {
+
+  }
 })
 
 

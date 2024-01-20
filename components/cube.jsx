@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react';
-import { View } from 'react-native';
+import { View, Text } from 'react-native';
 import * as THREE from 'three';
 import { Renderer } from 'expo-three';
 import { GLView } from 'expo-gl';
@@ -8,10 +8,13 @@ import * as RootNavigation from "../global/rootNavigation"
 
 const Cube = (props) => {
   // const [scramble, setscramble] = useState(props.scramble);
+  const [scrableState, setScrambleState] = useState(props.scramble);
   const scramble = useRef(props.scramble)
   const reset = useRef(props.reset)
   let sequence = [...scramble.current];
   let inScramble = useRef(true);
+  let newScramble = useRef(false)
+  let firstRun = useRef(true)
 
   const onContextCreate = async (gl) => {
     let scene, camera, renderer, controls, rollObject, group;
@@ -93,7 +96,6 @@ const Cube = (props) => {
     }).reduce((acc, [key, val]) => ({ ...acc, [key]: createMaterial(val) }), {});
 
     function init() {
-      console.log("Called")
       inScramble.current = true;
       const [innerWidth, innerHeight] = [gl.drawingBufferWidth, gl.drawingBufferHeight];
       scene = new THREE.Scene();
@@ -210,18 +212,18 @@ const Cube = (props) => {
     }
 
     function render() {
-      if(sequence.length < 1 && !inScramble) {
+      if((sequence.length < 1 && newScramble.current) || !inScramble.current) {
         sequence = [...scramble.current];
         cubes = [];
+        console.log("New Scramble: " + newScramble.current)
+        console.log("In scramble: " + inScramble.current)
+        newScramble.current = false;
         init();
       }
 
       if(RootNavigation.getCurrentRoute().name != "Main") {
         sequence = [...scramble.current];
       }
-
-      // console.log(sequence)
-      // console.log("Root Navigation: " + RootNavigation.getCurrentRoute().name)
 
       if(RootNavigation.getCurrentRoute().name === "Main") {
         requestAnimationFrame(render);
@@ -236,8 +238,16 @@ const Cube = (props) => {
   };
 
   useEffect(() => {
+      console.log("Scramble Change: UseEffect on Cube.jsx line 242")
       scramble.current = props.scramble;
+      setScrambleState(props.scramble)
       inScramble.current = false;
+
+      if(firstRun.current) {
+        firstRun.current = false
+      } else {
+        newScramble.current = true;
+      }
   }, [props.scramble]);
 
 
