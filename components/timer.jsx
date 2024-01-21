@@ -8,8 +8,8 @@ const Timer = (props) => {
     let milliSeconds= useRef(0);
     let seconds= useRef(0);
     let minutes = useRef(0);
+    let [timerStarted, setTimerStarted] = useState(false)
 
-    console.log("NEW COMPONENT")
 
     let [formatte, setFormatte] = useState(format())
 
@@ -43,19 +43,23 @@ const Timer = (props) => {
 
     let id = setInterval(function() {
         clearInterval(id)
-        milliSeconds.current = milliSeconds.current + 1;
+
+        if(timerStarted) {
+            milliSeconds.current = milliSeconds.current + 1;
         
-        if(milliSeconds.current > 99) {
-            seconds.current += 1;
-            milliSeconds.current = 0;
+            if(milliSeconds.current > 99) {
+                seconds.current += 1;
+                milliSeconds.current = 0;
+            }
+
+            if(seconds.current > 60) {
+                minutes.current += 1
+                seconds.current = 0;
+            }
         }
 
-        if(seconds.current > 60) {
-            minutes.current += seconds.current / 60
-            seconds.current = 0;
-        }
         setFormatte(format())
-    }, 1)
+    }, 0.001)
     
     useEffect(() => {
         milliSeconds.current = 0
@@ -65,7 +69,7 @@ const Timer = (props) => {
 
     return (
         <View>
-            <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header]}>{formatte}</Text>
+            <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header]} onPress={() => setTimerStarted(!timerStarted)}>{formatte}</Text>
         </View>
     )
 }
