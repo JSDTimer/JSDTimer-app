@@ -41,7 +41,7 @@ const Main = (props) => {
       <Nav navigation={navigation} funcr={setReset}></Nav>
       <Text style={[defaultstyles.text, style.Title]}>{currentCubeType}</Text>
       <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>{scramble.join(" ")}</Text>
-      <Timer></Timer>
+      <Timer scramble={scramble}></Timer>
       <Cube scramble={scramble} reset={reset} nav={navigation}></Cube>
       <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube}></CubeDropdown>
       <JSDButton onPress={() => setscramble(cubesrambler.scramble("3x3"))} text="New Scramble 🎉"></JSDButton>
