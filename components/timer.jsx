@@ -1,4 +1,4 @@
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useState, useEffect} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import { iOSUIKit } from 'react-native-typography'
 import defaultstyles from '../styles/default';
@@ -8,6 +8,8 @@ const Timer = (props) => {
     let milliSeconds= useRef(0);
     let seconds= useRef(0);
     let minutes = useRef(0);
+
+    let [formatte, setFormatte] = useState(format())
 
 
     function format() {
@@ -20,14 +22,14 @@ const Timer = (props) => {
         final += wM;
 
         //Second 
-        if(wS.length > 2) {
+        if(wS.length >= 2) {
             final += ":" + wS;
         } else {
             wS = "0" + wS;
             final += ":" + wS;
         }
         //Milli
-        if(wML.length > 2) {
+        if(wML.length >= 2) {
             final += ":" + wML
         } else {
             wML = "0" + wML;
@@ -41,6 +43,7 @@ const Timer = (props) => {
         milliSeconds.current = milliSeconds.current + 1
         seconds.current = milliSeconds.current / 1000
         minutes.current = seconds.current / 60
+        setFormatte(format())
     }, 1000)
     
     useEffect(() => {
@@ -51,7 +54,7 @@ const Timer = (props) => {
 
     return (
         <View>
-            <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header]}>{format()}</Text>
+            <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header]}>{formatte}</Text>
         </View>
     )
 }
