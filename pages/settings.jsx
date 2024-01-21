@@ -27,7 +27,7 @@ const SettingsNav = (props) => {
                 hidden = {false}
             >
             </StatusBar>}
-            <Icon name="arrow-back" size={35} color="#FFFFFF" style={styles.icon} onPress={() => { navigation.goBack()}}></Icon>
+            <Icon name="arrow-back" size={35} color="#CC165A" style={styles.icon} onPress={() => { navigation.goBack()}}></Icon>
         </SafeAreaView>
     )
 }

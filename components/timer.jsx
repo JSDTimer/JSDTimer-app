@@ -8,11 +8,16 @@ const Timer = (props) => {
     let milliSeconds= useRef(0);
     let seconds= useRef(0);
     let minutes = useRef(0);
-    let [timerStarted, setTimerStarted] = useState(false)
+    let [timerStarted, setTimerStarted] = useState(false);
+    let timerStartedForUseEffect = useRef(false)
 
 
     let [formatte, setFormatte] = useState(format())
 
+    function TimerControl() {
+        timerStartedForUseEffect.current = !timerStartedForUseEffect.current;
+        console.log(timerStartedForUseEffect.current)
+    }
 
     function format() {
         let final = "";
@@ -41,10 +46,11 @@ const Timer = (props) => {
         return final;
     }
 
-    let id = setInterval(function() {
+
+    let id = setInterval(() => {
         clearInterval(id)
 
-        if(timerStarted) {
+        if(timerStartedForUseEffect.current) {
             milliSeconds.current = milliSeconds.current + 1;
         
             if(milliSeconds.current > 99) {
@@ -65,11 +71,12 @@ const Timer = (props) => {
         milliSeconds.current = 0
         seconds.current = 0
         minutes.current = 0
+        timerStartedForUseEffect.current = false
     }, [props.scramble])
 
     return (
         <View>
-            <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header]} onPress={() => setTimerStarted(!timerStarted)}>{formatte}</Text>
+            <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header]} onPress={() => { TimerControl(); setTimerStarted(!timerStarted) }}>{formatte}</Text>
         </View>
     )
 }

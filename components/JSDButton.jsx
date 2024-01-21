@@ -4,7 +4,7 @@ import {Text, Pressable, StyleSheet } from "react-native"
 const JSDButton = (props) => {
 
     return (
-    <Pressable style={style.button}  android_ripple={{color: "#f8f9fa"}} onPress={props.onPress}>
+    <Pressable style={style.button}  android_ripple={{color: "#CC165A"}} onPress={props.onPress}>
         <Text style={style.text}>{ props.text }</Text>
     </Pressable>
     )

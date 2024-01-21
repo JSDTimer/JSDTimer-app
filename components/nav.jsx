@@ -8,7 +8,6 @@ const Nav = (props) => {
     let navigation = props.navigation;
 
     function startNavigation(location) {
-        setReset(true)
         navigation.navigate("Settings")
     }
 
@@ -29,8 +28,8 @@ const Nav = (props) => {
                 hidden = {false}
             >
             </StatusBar>}
-            <Icon name="menu" size={35} color="#FFFFFF" style={styles.icon}></Icon>
-            <Icon name="settings" size={35} color="#FFFFFF" style={styles.icon} onPress={startNavigation}></Icon>
+            <Icon name="menu" size={35} color="#CC165A" style={styles.icon}></Icon>
+            <Icon name="settings" size={35} color="#CC165A" style={styles.icon} onPress={startNavigation}></Icon>
         </SafeAreaView>
     );
 }

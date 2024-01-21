@@ -72,12 +72,14 @@ const style = StyleSheet.create({
     paddingTop: 30,
     paddingLeft: 30,
     paddingRight: 30,
-    fontSize: 15
+    fontSize: 15,
+    color: "#CC165A"
   },
   Title: {
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 30,
+    color: "#CC165A"
   },
   container: {
     flexDirection: "column"
