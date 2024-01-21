@@ -11,6 +11,8 @@ import { navigationRef } from './global/rootNavigation';
 import Nav from './components/nav';
 import Cube from './components/cube'
 import Timer from './components/timer'
+import JSDButton from './components/JSDButton';
+import CubeDropdown from './components/dropdown';
 
 
 /* Pages */
@@ -24,17 +26,25 @@ var Stack = createNativeStackNavigator();
 const Main = (props) => {
   const [scramble, setscramble] = useState(cubesrambler.scramble("3x3"))
   let [reset, setReset] = useState(false)
+  let cubeOptions = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Pyraminx", "Megaminx", "Skewb", "Clock"]
+  let [currentCubeType, setCurrentCubeType] = useState("3x3");
 
   let navigation = props.navigation;
   let route = props.route;
 
+  function changeCurrentCube(selectedItem, index) {
+    setCurrentCubeType(cubeOptions[index])
+  }
+
   return (
     <View style={[defaultstyles.main, style.container]}>
       <Nav navigation={navigation} funcr={setReset}></Nav>
+      <Text style={[defaultstyles.text, style.Title]}>{currentCubeType}</Text>
       <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>{scramble.join(" ")}</Text>
       <Timer></Timer>
       <Cube scramble={scramble} reset={reset} nav={navigation}></Cube>
-      <Button onPress={() => setscramble(cubesrambler.scramble("3x3"))} title="New Scramble 🎉"></Button>
+      <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube}></CubeDropdown>
+      <JSDButton onPress={() => setscramble(cubesrambler.scramble("3x3"))} text="New Scramble 🎉"></JSDButton>
     </View>
   )
 }
@@ -64,12 +74,14 @@ const style = StyleSheet.create({
     paddingRight: 30,
     fontSize: 15
   },
+  Title: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 30,
+  },
   container: {
     flexDirection: "column"
   },
-  scrambleButton: {
-
-  }
 })
 
 

@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     icon: {
         margin: 30,
         marginTop: 60
-    }
+    },
 })
 
 export default Nav;
