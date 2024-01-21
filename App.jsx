@@ -38,7 +38,7 @@ const Main = (props) => {
 
   return (
     <View style={[defaultstyles.main, style.container]}>
-      <Nav navigation={navigation} funcr={setReset}></Nav>
+      <Nav navigation={navigation} ></Nav>
       <Text style={[defaultstyles.text, style.Title]}>{currentCubeType}</Text>
       <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>{scramble.join(" ")}</Text>
       <Timer scramble={scramble}></Timer>

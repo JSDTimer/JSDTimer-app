@@ -6,7 +6,6 @@ import defaultstyles from '../styles/default';
 
 const Nav = (props) => {
     let navigation = props.navigation;
-    let setReset = props.funcr;
 
     function startNavigation(location) {
         setReset(true)
