@@ -9,6 +9,8 @@ const Timer = (props) => {
     let seconds= useRef(0);
     let minutes = useRef(0);
 
+    console.log("NEW COMPONENT")
+
     let [formatte, setFormatte] = useState(format())
 
 
@@ -39,12 +41,21 @@ const Timer = (props) => {
         return final;
     }
 
-    setInterval(function() {
-        milliSeconds.current = milliSeconds.current + 1
-        seconds.current = milliSeconds.current / 1000
-        minutes.current = seconds.current / 60
+    let id = setInterval(function() {
+        clearInterval(id)
+        milliSeconds.current = milliSeconds.current + 1;
+        
+        if(milliSeconds.current > 99) {
+            seconds.current += 1;
+            milliSeconds.current = 0;
+        }
+
+        if(seconds.current > 60) {
+            minutes.current += seconds.current / 60
+            seconds.current = 0;
+        }
         setFormatte(format())
-    }, 1000)
+    }, 1)
     
     useEffect(() => {
         milliSeconds.current = 0
