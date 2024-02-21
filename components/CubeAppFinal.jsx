@@ -13,7 +13,9 @@ const Cube = (props) => {
     let sequence = [...scramble.current];
     let inScramble = useRef(true);
     let newScramble = useRef(false);
+    let newType = useRef(false);
     let firstRun = useRef(true);
+    let firstRun2 = useRef(true);
     let cubeType = useRef(props.cubeType);
     let actualCubeType = 3;
 
@@ -90,7 +92,7 @@ const Cube = (props) => {
           
         // 2x2 - 7x7
         setCubeType()
-        const type = actualCubeType; // TODO CHANGE THIS TO SET THE LAYER
+        var type = actualCubeType; // TODO CHANGE THIS TO SET THE LAYER
         var [rotateConditions, colorConditions, cPositions] = setVariables(type);
 
         // const step = Math.PI / 2;
@@ -254,6 +256,15 @@ const Cube = (props) => {
         }
     
         function render() {
+          if(newType.current) {
+            type = actualCubeType;
+
+            [rotateConditions, colorConditions, cPositions] = setVariables(type)
+            newType.current = false;
+            cubes = [];
+            init();
+          }
+
           if((sequence.length < 1 && newScramble.current) || !inScramble.current) {
             sequence = [...scramble.current];
             cubes = [];
@@ -296,6 +307,13 @@ const Cube = (props) => {
     useEffect(() => {
       cubeType.current = props.cubeType;
       setCubeType();
+
+
+      if (firstRun2.current) {
+        firstRun2.current = false;
+      } else {
+        newType.current = true;
+      }
     }, [props.cubeType])
 
     return (
