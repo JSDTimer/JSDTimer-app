@@ -10,6 +10,7 @@ import defaultstyles from './styles/default';
 import { navigationRef } from './global/rootNavigation';
 import Nav from './components/nav';
 import Cube from './components/cube'
+import NewCube from './components/CubeAppFinal'
 import Timer from './components/timer'
 import JSDButton from './components/JSDButton';
 import CubeDropdown from './components/dropdown';
@@ -42,9 +43,9 @@ const Main = (props) => {
       <Text style={[defaultstyles.text, style.Title]}>{currentCubeType}</Text>
       <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>{scramble.join(" ")}</Text>
       <Timer scramble={scramble}></Timer>
-      <Cube scramble={scramble} reset={reset} nav={navigation}></Cube>
+      <NewCube scramble={scramble} reset={reset} nav={navigation} cubeType={currentCubeType}></NewCube>
       <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube}></CubeDropdown>
-      <JSDButton onPress={() => setscramble(cubesrambler.scramble("3x3"))} text="New Scramble 🎉"></JSDButton>
+      <JSDButton onPress={() => setscramble(cubesrambler.scramble(currentCubeType))} text="New Scramble 🎉"></JSDButton>
     </View>
   )
 }
