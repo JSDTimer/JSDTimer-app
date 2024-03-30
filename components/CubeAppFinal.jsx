@@ -1,7 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 import { View, Text } from 'react-native';
-import * as THREE from 'three';
-import { Renderer } from 'expo-three';
+import { Renderer, THREE } from 'expo-three';
 import { GLView } from 'expo-gl';
 import { styles } from "../styles/default"
 import * as RootNavigation from "../global/rootNavigation"
