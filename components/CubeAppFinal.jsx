@@ -166,11 +166,11 @@ const Cube = (props) => {
           constructor(face, direction) {
             this.face = face;
             this.stepTotal = 20; // TODO CHANGE THIS TO CHANGE CUBE SPEED (SMALLER = FASTER)
-            this.stepAmount = Math.PI / (2 * this.stepAmount);
+            this.stepAmount = Math.PI / (2 * this.stepTotal);
             this.steps = 0;
             this.active = true;
-            this.init();
             this.direction = direction;
+            this.init();
           }
     
           init() {
@@ -192,19 +192,20 @@ const Cube = (props) => {
             }
           }
     
-          clearGroup() {
-            for (let i = group.children.length - 1; i >= 0; i--) {
-              const item = group.children[i];
-              item.getWorldPosition(item.position);
-              item.getWorldQuaternion(item.rotation);
-              item.position.x = Math.round(item.position.x * 2) / 2;
-              item.position.y = Math.round(item.position.y * 2) / 2;
-              item.position.z = Math.round(item.position.z * 2) / 2;
-              group.remove(item);
-              scene.add(item);
-            }
-            group.rotation[this.face.axis] = 0;
+          clearGroup() {             
+              for (let i = group.children.length - 1; i >= 0; i--) {
+                  const item = group.children[i];
+                  item.getWorldPosition(item.position);
+                  item.getWorldQuaternion(item.rotation);
+                  item.position.x = Math.round(item.position.x * 2) / 2;
+                  item.position.y = Math.round(item.position.y * 2) / 2;
+                  item.position.z = Math.round(item.position.z * 2) / 2;
+                  group.remove(item);
+                  scene.add(item);
+              }
+              group.rotation[this.face.axis] = 0;
           }
+
         }
     
         function createObjects() {
@@ -257,15 +258,15 @@ const Cube = (props) => {
     
         function render() {
           if(newType.current) {
+            setCubeType();
             type = actualCubeType;
-
             [rotateConditions, colorConditions, cPositions] = setVariables(type)
             newType.current = false;
             cubes = [];
             init();
           }
 
-          if((sequence.length < 1 && newScramble.current) || !inScramble.current) {
+          if((sequence.length < 1 && newScramble.current)) {
             sequence = [...scramble.current];
             cubes = [];
             console.log("New Scramble: " + newScramble.current)
@@ -285,7 +286,6 @@ const Cube = (props) => {
             gl.endFrameEXP();
           }
         }
-    
         init();
         render();
     };
@@ -294,8 +294,6 @@ const Cube = (props) => {
         scramble.current = props.scramble;
         setScrambleSet(props.scramble);
         inScramble.current = false;
-
-        
 
         if (firstRun.current) {
             firstRun.current = false;
@@ -307,7 +305,6 @@ const Cube = (props) => {
     useEffect(() => {
       cubeType.current = props.cubeType;
       setCubeType();
-
 
       if (firstRun2.current) {
         firstRun2.current = false;
