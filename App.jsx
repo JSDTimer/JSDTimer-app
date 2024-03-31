@@ -25,7 +25,7 @@ var Stack = createNativeStackNavigator();
 
 //Main page
 const Main = (props) => {
-  const [scramble, setscramble] = useState(cubesrambler.scramble("3x3"))
+  const [scramble, setscramble] = useState([])
   let [reset, setReset] = useState(false)
   let cubeOptions = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Pyraminx", "Megaminx", "Skewb", "Clock"]
   let [currentCubeType, setCurrentCubeType] = useState("3x3");
@@ -37,11 +37,19 @@ const Main = (props) => {
     setCurrentCubeType(cubeOptions[index])
   }
 
+  let scrambleText;
+
+  if(scramble.length) {
+    scrambleText = <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>{scramble.join(" ")}</Text>
+  } else {
+    scrambleText = <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>NO SCRAMBLE</Text>
+  }
+
   return (
     <View style={[defaultstyles.main, style.container]}>
       <Nav navigation={navigation} ></Nav>
       <Text style={[defaultstyles.text, style.Title]}>{currentCubeType}</Text>
-      <Text style={[defaultstyles.text, style.scramble, {flex: 1}]}>{scramble.join(" ")}</Text>
+      {scrambleText}
       <Timer scramble={scramble}></Timer>
       <NewCube scramble={scramble} reset={reset} nav={navigation} cubeType={currentCubeType}></NewCube>
       <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube}></CubeDropdown>

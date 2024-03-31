@@ -262,6 +262,7 @@ const Cube = (props) => {
             [rotateConditions, colorConditions, cPositions] = setVariables(type)
             newType.current = false;
             cubes = [];
+            sequence = [];
             init();
           }
 
