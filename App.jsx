@@ -2,14 +2,12 @@ import React, {useState} from 'react';
 import {View, Text, StyleSheet, Button} from 'react-native';
 import {NavigationContainer } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import { iOSUIKit } from 'react-native-typography'
 import * as cubesrambler from "cube-scramble.js"
 
 /* User imports */
 import defaultstyles from './styles/default';
 import { navigationRef } from './global/rootNavigation';
 import Nav from './components/nav';
-import Cube from './components/cube'
 import NewCube from './components/CubeAppFinal'
 import Timer from './components/timer'
 import JSDButton from './components/JSDButton';
