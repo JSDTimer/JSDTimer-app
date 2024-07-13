@@ -1,84 +1,85 @@
-import React, {useRef, useState, useEffect} from 'react';
-import {View, Text, StyleSheet} from 'react-native';
-import { iOSUIKit } from 'react-native-typography'
+import React, { useRef, useState, useEffect } from 'react';
+import { View, Text } from 'react-native';
+import { iOSUIKit } from 'react-native-typography';
 import defaultstyles from '../styles/default';
 
 const Timer = (props) => {
-    let pressMethod = props.onPress
-    let milliSeconds= useRef(0);
-    let seconds= useRef(0);
-    let minutes = useRef(0);
+    let pressMethod = props.onPress;
     let [timerStarted, setTimerStarted] = useState(false);
-    let timerStartedForUseEffect = useRef(false)
-
-
-    let [formatte, setFormatte] = useState(format())
+    let timerStartedForUseEffect = useRef(false);
+    let startTime = useRef(0);
+    let elapsed = useRef(0);
+    let [formatted, setFormatted] = useState("0:00.0");
 
     function TimerControl() {
+        if (timerStartedForUseEffect.current) {
+            // Stop the timer
+            elapsed.current += Date.now() - startTime.current;
+        } else {
+            // Start the timer
+            startTime.current = Date.now();
+        }
         timerStartedForUseEffect.current = !timerStartedForUseEffect.current;
-        console.log(timerStartedForUseEffect.current)
+        setTimerStarted(!timerStarted);
     }
 
-    function format() {
-        let final = "";
-        let wML = Math.floor(milliSeconds.current).toString();
-        let wS = Math.floor(seconds.current).toString();
-        let wM = Math.floor(minutes.current).toString();
+    function format(milliseconds) {
+        let totalSeconds = Math.floor(milliseconds / 1000);
+        let wML = Math.floor((milliseconds % 1000) / 100).toString();
+        let wS = (totalSeconds % 60).toString();
+        let wM = Math.floor(totalSeconds / 60).toString();
 
-        //Minute
-        final += wM;
 
-        //Second 
-        if(wS.length >= 2) {
-            final += ":" + wS;
-        } else {
-            wS = "0" + wS;
-            final += ":" + wS;
+
+        if (wS.length < 2) {
+            wS = wS;
         }
-        //Milli
-        if(wML.length >= 2) {
-            final += ":" + wML
-        } else {
+        if (wML.length < 1) {
             wML = "0" + wML;
-            final += ":" + wML;
         }
 
-        return final;
+        if (wM.length <= 1) {
+            return wS + "." + wML;
+        } else {
+            return wM + ":" + wS + "." + wML;
+        }
     }
 
-
-    let id = setInterval(() => {
-        clearInterval(id)
-
-        if(timerStartedForUseEffect.current) {
-            milliSeconds.current = milliSeconds.current + 1;
-        
-            if(milliSeconds.current > 99) {
-                seconds.current += 1;
-                milliSeconds.current = 0;
-            }
-
-            if(seconds.current > 60) {
-                minutes.current += 1
-                seconds.current = 0;
-            }
-        }
-
-        setFormatte(format())
-    }, 0.001)
-    
     useEffect(() => {
-        milliSeconds.current = 0
-        seconds.current = 0
-        minutes.current = 0
-        timerStartedForUseEffect.current = false
-    }, [props.scramble])
+        let id = setInterval(() => {
+            if (timerStartedForUseEffect.current) {
+                let currentTime = Date.now();
+                let timeDiff = currentTime - startTime.current + elapsed.current;
+                setFormatted(format(timeDiff));
+            }
+        }, 100); // 100 milliseconds interval
+
+        return () => clearInterval(id); // Cleanup interval on component unmount
+    }, []);
+
+    useEffect(() => {
+        startTime.current = 0;
+        elapsed.current = 0;
+        timerStartedForUseEffect.current = false;
+        setFormatted("0:00.0");
+    }, [props.scramble]);
 
     return (
         <View>
-            <Text style={[defaultstyles.h1, defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, defaultstyles.header]} onPress={() => { TimerControl(); setTimerStarted(!timerStarted) }}>{formatte}</Text>
+            <Text
+                style={[
+                    defaultstyles.h1,
+                    defaultstyles.text,
+                    iOSUIKit.largeTitleEmphasizedWhite,
+                    defaultstyles.header
+                ]}
+                onPress={() => { TimerControl(); pressMethod && pressMethod(); }}
+            >
+                {formatted}
+            </Text>
         </View>
-    )
-}
+    );
+};
 
 export default Timer;
+
