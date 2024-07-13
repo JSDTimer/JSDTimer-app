@@ -38,10 +38,12 @@ const Timer = (props) => {
             wML = "0" + wML;
         }
 
-        if (wM.length <= 1) {
+        if (wM.charAt(0) == '0') {
             return wS + "." + wML;
+        } else if (wS.length == 1){
+            return wM + ":" + "0" + wS + "." + wML;
         } else {
-            return wM + ":" + wS + "." + wML;
+            return wM + ":" + + wS + "." + wML;
         }
     }
 
