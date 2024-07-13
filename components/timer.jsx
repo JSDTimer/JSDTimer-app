@@ -61,7 +61,7 @@ const Timer = (props) => {
         startTime.current = 0;
         elapsed.current = 0;
         timerStartedForUseEffect.current = false;
-        setFormatted("0:00.0");
+        setFormatted("0.0");
     }, [props.scramble]);
 
     return (
