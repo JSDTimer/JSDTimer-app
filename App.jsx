@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
 import {NavigationContainer } from '@react-navigation/native';
+import { ThemeProvider } from 'react-native-ios-kit';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as cubesrambler from "cube-scramble.js";
 
@@ -63,10 +64,12 @@ const App = () => {
   return (
     <View style={defaultstyles.main}>
       <NavigationContainer ref={navigationRef}>
+      <ThemeProvider>
           <Stack.Navigator>
             <Stack.Screen name="Main" component={Main} options={{headerShown:false}}></Stack.Screen>
             <Stack.Screen name="Settings" component={Settings} options={{headerShown:false}}></Stack.Screen>
           </Stack.Navigator>
+      </ThemeProvider>
       </NavigationContainer>
     </View>
   );

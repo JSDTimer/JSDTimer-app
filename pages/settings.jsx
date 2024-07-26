@@ -38,11 +38,8 @@ const Settings = (props) => {
     return (
         <View style={defaultstyles.main}>
             <SettingsNav navigation={navigation}></SettingsNav>
+            <Text style={[iOSUIKit.footnoteEmphasizedWhite, styles.header]}>Settings</Text>
             <ScrollView>
-                <Text style={[iOSUIKit.footnoteEmphasizedWhite, styles.header]}>THIS THE SETTINGS PAGE</Text>
-                <Switch
-                    ios_backgroundColor="#3e3e3e"
-                />
             </ScrollView>
         </View>
     )
