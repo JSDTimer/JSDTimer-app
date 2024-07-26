@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { View, Text } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import defaultstyles from '../styles/default';
 
@@ -73,7 +73,7 @@ const Timer = (props) => {
                     defaultstyles.h1,
                     defaultstyles.text,
                     iOSUIKit.largeTitleEmphasizedWhite,
-                    defaultstyles.header
+                    styles.timerStyle
                 ]}
                 onPress={() => { TimerControl(); pressMethod && pressMethod(); }}
             >
@@ -82,6 +82,12 @@ const Timer = (props) => {
         </View>
     );
 };
+
+let styles = StyleSheet.create({
+    timerStyle: {
+        textAlign: 'center',
+    }
+});
 
 export default Timer;
 

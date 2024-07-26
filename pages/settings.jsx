@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, StatusBar ,Platform, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, StatusBar ,Platform, ScrollView, Switch} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { iOSUIKit } from 'react-native-typography'
 
@@ -40,6 +40,9 @@ const Settings = (props) => {
             <SettingsNav navigation={navigation}></SettingsNav>
             <ScrollView>
                 <Text style={[iOSUIKit.footnoteEmphasizedWhite, styles.header]}>THIS THE SETTINGS PAGE</Text>
+                <Switch
+                    ios_backgroundColor="#3e3e3e"
+                />
             </ScrollView>
         </View>
     )
