@@ -1,10 +1,11 @@
 import React, {useState} from 'react';
 import {View, Text, StyleSheet, SafeAreaView, StatusBar ,Platform, ScrollView, Switch} from 'react-native';
 import Icon from 'react-native-vector-icons/MaterialIcons';
-import { iOSUIKit } from 'react-native-typography'
+import { iOSUIKit } from 'react-native-typography';
 
 /* User imports */
 import defaultstyles from '../styles/default';
+import { version } from '../global/globals';
 
 
 const SettingsNav = (props) => {
@@ -33,14 +34,17 @@ const SettingsNav = (props) => {
 }
 
 const Settings = (props) => {
+    let [versionString, _] = useState(version);
     let navigation = props.navigation;
 
     return (
         <View style={defaultstyles.main}>
             <SettingsNav navigation={navigation}></SettingsNav>
-            <Text style={[iOSUIKit.footnoteEmphasizedWhite, styles.header]}>Settings</Text>
-            <ScrollView>
-            </ScrollView>
+            <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Settings</Text>
+            <View style={styles.parentview}>
+                <ScrollView style={styles.scrollview}>
+                </ScrollView>
+            </View>
         </View>
     )
 }
@@ -57,6 +61,16 @@ const styles = StyleSheet.create({
         margin: 30,
         marginTop: 60
     },
+    scrollview: {
+        width: "90%",
+    },
+    parentview: {
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    switch: {
+        borderRadius: 20,
+    }
 })
 
 export default Settings;
