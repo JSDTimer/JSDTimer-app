@@ -43,6 +43,12 @@ const Settings = (props) => {
             <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Settings</Text>
             <View style={styles.parentview}>
                 <ScrollView style={styles.scrollview}>
+                    <View style={[styles.settingsContainer]}>
+                        <View style={[styles.settingsChild]}><Text style={defaultstyles.text}>General Settings</Text></View>
+                        <View style={[styles.settingsChild]}><Text style={defaultstyles.text}>Cube Settings</Text></View>
+                        <View style={[styles.settingsChild]}><Text style={defaultstyles.text}>Theme</Text></View>
+                        <View style={[styles.settingsChild]}><Text style={defaultstyles.text}>Settings</Text></View>
+                    </View>
                 </ScrollView>
             </View>
         </View>
@@ -70,6 +76,17 @@ const styles = StyleSheet.create({
     },
     switch: {
         borderRadius: 20,
+    },
+    settingsContainer: {
+       backgroundColor: "rgba(100, 100, 100, 0.3)",
+       borderRadius: 20, 
+    },
+    settingsChild: {
+        padding: 10,
+        paddingTop: 15,
+        paddingBottom: 15,
+        borderTopWidth: 1,
+        //backgroundColor: "rgba(52, 52, 52, 0.8)"
     }
 })
 
