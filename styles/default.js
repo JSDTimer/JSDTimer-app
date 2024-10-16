@@ -2,13 +2,13 @@ import {StyleSheet} from 'react-native';
 
 export let styles = {
     main: {
-        backgroundColor: "#212529",
+        backgroundColor: "#000000",
         height: "100%",
         width: "100%",
         color: "#f8f9fa"
     },
     text: {
-        color: "#f8f9fa",
+        color: "#FFFFFF",
     },
     h1: {
         fontSize: 60

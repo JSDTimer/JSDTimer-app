@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, TouchableWithoutFeedback } from 'react-native';
+import {NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as cubesrambler from "cube-scramble.js";
 
@@ -9,6 +10,7 @@ import Nav from './components/nav';
 import NewCube from './components/CubeAppFinal';
 import Timer from './components/timer';
 import CubeDropdown from './components/dropdown';
+import { navigationRef } from './global/rootNavigation';
 
 /* Pages */
 import Settings from './pages/settings';
@@ -33,7 +35,7 @@ const Main = (props) => {
   if (scramble.length) {
     scrambleText = <Text style={[defaultstyles.text, style.scramble, { flex: 1 }]}>{scramble.join(" ")}</Text>;
   } else {
-    scrambleText = <Text style={[defaultstyles.text, style.scramble, { flex: 1 }]}>NO SCRAMBLE</Text>;
+    scrambleText = <Text style={[defaultstyles.text, style.noScramble, { flex: 1 }]}>Click for a new scramble</Text>;
   }
 
   // Function to generate new scramble on screen press
@@ -42,16 +44,32 @@ const Main = (props) => {
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleScreenPress}>
       <View style={[defaultstyles.main, style.container]}>
         <Nav navigation={navigation} />
         <Text style={[defaultstyles.text, style.Title]}>{currentCubeType}</Text>
+        <TouchableWithoutFeedback onPress={handleScreenPress}>
         {scrambleText}
+        </TouchableWithoutFeedback>
         <Timer scramble={scramble} />
         <NewCube scramble={scramble} nav={navigation} cubeType={currentCubeType} />
-        <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube} />
+        <View style={[style.ButtonsContainer]}>
+          <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube} />
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+  );
+};
+
+const App = () => {
+
+  return (
+    <View style={defaultstyles.main}>
+      <NavigationContainer ref={navigationRef}>
+          <Stack.Navigator>
+            <Stack.Screen name="Main" component={Main} options={{headerShown:false}}></Stack.Screen>
+            <Stack.Screen name="Settings" component={Settings} options={{headerShown:false}}></Stack.Screen>
+          </Stack.Navigator>
+      </NavigationContainer>
+    </View>
   );
 };
 
@@ -70,9 +88,23 @@ const style = StyleSheet.create({
     fontSize: 30,
     color: "#CC165A"
   },
+  noScramble: {
+    color: "#262525",
+    textAlign: "center",
+    paddingTop: 30,
+    paddingLeft: 30,
+    paddingRight: 30,
+    fontSize: 15,
+    fontWeight: "bold"
+  },
   container: {
     flexDirection: "column"
+  },
+  ButtonsContainer: {
+    paddingBottom: 80,
+    justifyContent: 'center',
+    alignItems: 'center',
   }
 });
 
-export default Main;
+export default App;

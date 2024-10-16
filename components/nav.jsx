@@ -28,7 +28,7 @@ const Nav = (props) => {
                 hidden = {false}
             >
             </StatusBar>}
-            <Icon name="menu" size={35} color="#CC165A" style={styles.icon}></Icon>
+            <Icon name="trending-up" size={35} color="#CC165A" style={styles.icon}></Icon>
             <Icon name="settings" size={35} color="#CC165A" style={styles.icon} onPress={startNavigation}></Icon>
         </SafeAreaView>
     );
