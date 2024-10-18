@@ -11,6 +11,7 @@ const Timer = (props) => {
     let elapsed = useRef(0);
     let [formatted, setFormatted] = useState("0:00.0");
 
+    //Timer controller, controlling stop and start times
     function TimerControl() {
         if (timerStartedForUseEffect.current) {
             // Stop the timer
@@ -23,17 +24,17 @@ const Timer = (props) => {
         setTimerStarted(!timerStarted);
     }
 
+    /*Function to format the timer in terms of milliseconds*/
     function format(milliseconds) {
         let totalSeconds = Math.floor(milliseconds / 1000);
         let wML = Math.floor((milliseconds % 1000) / 100).toString();
         let wS = (totalSeconds % 60).toString();
         let wM = Math.floor(totalSeconds / 60).toString();
 
-
-
         if (wS.length < 2) {
             wS = wS;
         }
+
         if (wML.length < 1) {
             wML = "0" + wML;
         }
@@ -75,7 +76,7 @@ const Timer = (props) => {
                     iOSUIKit.largeTitleEmphasizedWhite,
                     styles.timerStyle
                 ]}
-                onPress={() => { TimerControl(); pressMethod && pressMethod(); }}
+                onLongPress={() => { TimerControl(); pressMethod && pressMethod(); }}
             >
                 {formatted}
             </Text>
