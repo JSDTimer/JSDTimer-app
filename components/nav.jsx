@@ -7,7 +7,7 @@ import defaultstyles from '../styles/default';
 const Nav = (props) => {
     let navigation = props.navigation;
 
-    function startNavigation(location) {
+    function startNavigation() {
         navigation.navigate("Settings")
     }
 

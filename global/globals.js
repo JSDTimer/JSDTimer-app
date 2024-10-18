@@ -1,3 +1,3 @@
-//Just global things and stuff
+//global constants ONLY CONSTANTS HERE
 
 export const version = "vALPHA";
