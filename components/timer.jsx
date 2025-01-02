@@ -2,6 +2,8 @@ import React, { useRef, useState, useEffect } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import defaultstyles from '../styles/default';
+import { useSessionState } from '../global/store'
+import { Data, Session } from "../global/sessionsManager"
 
 const Timer = (props) => {
     let pressMethod = props.onPress;
@@ -10,6 +12,13 @@ const Timer = (props) => {
     let startTime = useRef(0);
     let elapsed = useRef(0);
     let [formatted, setFormatted] = useState("0:00.0");
+
+    //DB 
+    let db = useSessionState((state) => state.db);
+    let sessionID = useSessionState((state) => state.sessionID);
+    let sessions = useSessionState((state) => state.sessions);
+    let changeSessionID = useSessionState((state) => state.changeSessionID);
+    let changeSessionsArray = useSessionState((state) => state.changeSessionsArray);
 
     //Timer controller, controlling stop and start times
     function TimerControl() {
@@ -61,6 +70,17 @@ const Timer = (props) => {
     }, []);
 
     useEffect(() => {
+        if(elapsed.current != 0) {
+            let data = new Data(elapsed.current, Date.now());
+
+            //Get the current session
+            let currentSession = sessions[sessionID - 1];
+            let tempSessionObject = new Session(currentSession.sessionID, currentSession.analytics.LyticsData.data);
+            tempSessionObject.analytics.LyticsData.push(data);
+
+            console.log(tempSessionObject.analytics.LyticsData)
+            db.setArray("sessions", sessions);
+        }
         startTime.current = 0;
         elapsed.current = 0;
         timerStartedForUseEffect.current = false;

@@ -7,8 +7,12 @@ import defaultstyles from '../styles/default';
 const Nav = (props) => {
     let navigation = props.navigation;
 
-    function startNavigation() {
+    function startNavigationSet() {
         navigation.navigate("Settings")
+    }
+
+    function startNavigationAn() {
+        navigation.navigate("Analytics")
     }
 
     return (
@@ -28,8 +32,8 @@ const Nav = (props) => {
                 hidden = {false}
             >
             </StatusBar>}
-            <Icon name="trending-up" size={35} color="#CC165A" style={styles.icon}></Icon>
-            <Icon name="settings" size={35} color="#CC165A" style={styles.icon} onPress={startNavigation}></Icon>
+            <Icon name="trending-up" size={35} color="#CC165A" style={styles.icon} onPress={startNavigationAn}></Icon>
+            <Icon name="settings" size={35} color="#CC165A" style={styles.icon} onPress={startNavigationSet}></Icon>
         </SafeAreaView>
     );
 }

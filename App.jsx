@@ -14,6 +14,7 @@ import { navigationRef } from './global/rootNavigation';
 
 /* Pages */
 import Settings from './pages/settings';
+import Analytics from './pages/analytics';
 import { StorageSettings} from'./pages/settings';
 
 var Stack = createNativeStackNavigator();
@@ -67,6 +68,7 @@ const App = () => {
       <NavigationContainer ref={navigationRef}>
           <Stack.Navigator>
             <Stack.Screen name="Main" component={Main} options={{headerShown:false}}></Stack.Screen>
+            <Stack.Screen name="Analytics" component={Analytics} options={{headerShown:false}}></Stack.Screen>
             <Stack.Screen name="Settings" component={Settings} options={{headerShown:false}}></Stack.Screen>
             <Stack.Screen name="StorageSettings" component={StorageSettings} options={{headerShown:false}}></Stack.Screen>
           </Stack.Navigator>

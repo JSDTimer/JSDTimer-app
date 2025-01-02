@@ -68,7 +68,6 @@ export const StorageSettings = (props) => {
     let db = useSessionState((state) => state.db);
     let changeSessionID = useSessionState((state) => state.changeSessionID);
 
-    // console.log(db.getString("username"));
 
     function clearStorage() {
         clearEverything();
