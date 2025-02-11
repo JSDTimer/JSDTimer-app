@@ -12,6 +12,8 @@ const Timer = (props) => {
     let startTime = useRef(0);
     let elapsed = useRef(0);
     let [formatted, setFormatted] = useState("0:00.0");
+    let [isPressed, setIsPressed] = useState(false);
+    let [longPressed, setLongPressed] = useState(false);
 
     //DB 
     let db = useSessionState((state) => state.db);
@@ -94,9 +96,14 @@ const Timer = (props) => {
                     defaultstyles.h1,
                     defaultstyles.text,
                     iOSUIKit.largeTitleEmphasizedWhite,
-                    styles.timerStyle
+                    styles.timerStyle,
+                    {
+                        color: isPressed ?  longPressed ? "green" : "red": "white"
+                    },
                 ]}
-                onLongPress={() => { TimerControl(); pressMethod && pressMethod(); }}
+                onLongPress={() => { TimerControl(); pressMethod && pressMethod(); setLongPressed(true);}}
+                onPressIn={() => {setIsPressed(true)}}
+                onPressOut={() => {setIsPressed(false); setLongPressed(false)}}
             >
                 {formatted}
             </Text>
