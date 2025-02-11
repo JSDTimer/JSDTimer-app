@@ -18,7 +18,6 @@ const Cube = (props) => {
     let cubeType = useRef(props.cubeType);
     let actualCubeType = 3;
 
-
     function setCubeType() {
       switch (cubeType.current) {
         case "2x2":
@@ -40,7 +39,7 @@ const Cube = (props) => {
             actualCubeType = 7;
             break;
         default:
-          actualCubeType = 3;
+          actualCubeType = 0;
       }
     }
 
@@ -141,14 +140,16 @@ const Cube = (props) => {
           inScramble.current = true;
           const [innerWidth, innerHeight] = [gl.drawingBufferWidth, gl.drawingBufferHeight];
           scene = new THREE.Scene();
-    
-          renderer = new Renderer({ gl, antialias: true });
-          renderer.setClearColor(styles.main.backgroundColor);
-          renderer.setSize(innerWidth, innerHeight);
-          camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 1000);
-          camera.position.set(8,8,8);
-          camera.lookAt(0,0,0);
-          createObjects();
+
+          if(type != 0) {
+            renderer = new Renderer({ gl, antialias: true });
+            renderer.setClearColor(styles.main.backgroundColor);
+            renderer.setSize(innerWidth, innerHeight);
+            camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 1000);
+            camera.position.set(8,8,8);
+            camera.lookAt(0,0,0);
+            createObjects();
+          }
         }
     
         const wideLayerFaces = function(input,type) {
@@ -259,7 +260,12 @@ const Cube = (props) => {
           if(newType.current) {
             setCubeType();
             type = actualCubeType;
-            [rotateConditions, colorConditions, cPositions] = setVariables(type)
+
+            if(type == 0) {
+              [rotateConditions, colorConditions, cPositions] = [0,0,0];
+            } else {
+              [rotateConditions, colorConditions, cPositions] = setVariables(type);
+            }
             newType.current = false;
             cubes = [];
             sequence = [];
@@ -275,17 +281,18 @@ const Cube = (props) => {
             init();
           }
     
-          if(RootNavigation.getCurrentRoute().name != "Main") {
+          if(RootNavigation.getCurrentRoute() && RootNavigation.getCurrentRoute().name != "Main") {
             sequence = [...scramble.current];
           }
     
-          if(RootNavigation.getCurrentRoute().name === "Main") {
+          if(RootNavigation.getCurrentRoute() && RootNavigation.getCurrentRoute().name === "Main") {
             requestAnimationFrame(render);
             update();
             renderer.render(scene, camera);
             gl.endFrameEXP();
           }
         }
+
         init();
         render();
     };
@@ -311,10 +318,19 @@ const Cube = (props) => {
       } else {
         newType.current = true;
       }
-    }, [props.cubeType])
+    }, [props.cubeType]);
+
+    //Remove later - in a future update
+      let sadComp = (
+        <View style={{flex: 5}}>
+            <Text style={{color: "white"}}>{props.cubeType} is currently not supported by the 3D viewer :(</Text>
+        </View>
+      )
+
 
     return (
         <View style={{flex: 5}}>
+          {props.cubeType === "Pyraminx" || props.cubeType ===  "Megaminx" || props.cubeType ===   "Skewb" || props.cubeType ===  "Clock" ? sadComp : "" }
             <GLView
                 onContextCreate={onContextCreate}
                 // Set height and width of GLView

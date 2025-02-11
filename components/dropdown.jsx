@@ -10,6 +10,7 @@ const CubeDropdown = (props) => {
     function renderDropIcon() {
         return <Icon name="angle-down" size={20} color="#FFFFFF" style={style.dropDownIconStyle}></Icon>
     }
+    
     return (
         <SelectDropdown data={cubeOptions} defaultButtonText="Cube Type..." buttonStyle={style.button} buttonTextStyle={style.text} dropdownStyle={style.dropDownStyle} renderDropdownIcon={renderDropIcon} dropdownIconPosition='right' onSelect={selectFunction}></SelectDropdown>
     )

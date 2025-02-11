@@ -1,11 +1,13 @@
 import React from 'react';
 import {SafeAreaView ,StyleSheet ,StatusBar ,Platform} from 'react-native';
+import { useTheme } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/Ionicons';
 import defaultstyles from '../styles/default';
 
 
 const Nav = (props) => {
     let navigation = props.navigation;
+    let currentTheme = useTheme();
 
     function startNavigationSet() {
         navigation.navigate("Settings")
@@ -32,8 +34,8 @@ const Nav = (props) => {
                 hidden = {false}
             >
             </StatusBar>}
-            <Icon name="trending-up" size={35} color="#CC165A" style={styles.icon} onPress={startNavigationAn}></Icon>
-            <Icon name="settings" size={35} color="#CC165A" style={styles.icon} onPress={startNavigationSet}></Icon>
+            <Icon name="trending-up" size={35} color={currentTheme["color-primary-500"]} style={styles.icon} onPress={startNavigationAn}></Icon>
+            <Icon name="settings" size={35} color={currentTheme["color-primary-500"]} style={styles.icon} onPress={startNavigationSet}></Icon>
         </SafeAreaView>
     );
 }
