@@ -141,13 +141,14 @@ const Cube = (props) => {
           const [innerWidth, innerHeight] = [gl.drawingBufferWidth, gl.drawingBufferHeight];
           scene = new THREE.Scene();
 
-          if(type != 0) {
-            renderer = new Renderer({ gl, antialias: true });
-            renderer.setClearColor(styles.main.backgroundColor);
-            renderer.setSize(innerWidth, innerHeight);
-            camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 1000);
-            camera.position.set(8,8,8);
-            camera.lookAt(0,0,0);
+          renderer = new Renderer({ gl, antialias: true });
+          renderer.setClearColor(styles.main.backgroundColor);
+          renderer.setSize(innerWidth, innerHeight);
+          camera = new THREE.PerspectiveCamera(45, innerWidth / innerHeight, 1, 1000);
+          camera.position.set(8,8,8);
+          camera.lookAt(0,0,0);
+
+          if(type != 0) { 
             createObjects();
           }
         }
@@ -242,7 +243,7 @@ const Cube = (props) => {
         }
     
         function update() {
-          if (!rollObject) return;
+          if (!rollObject || type == 0) return;
           if (rollObject.active) rollObject.rollFace();
           else {
             const move = sequence.shift()
@@ -321,16 +322,16 @@ const Cube = (props) => {
     }, [props.cubeType]);
 
     //Remove later - in a future update
-      let sadComp = (
-        <View style={{flex: 5}}>
-            <Text style={{color: "white"}}>{props.cubeType} is currently not supported by the 3D viewer :(</Text>
-        </View>
-      )
+    let sadComp = (
+      <View style={{flex: 5}}>
+          <Text style={{color: "white"}}>{props.cubeType} is currently not supported by the 3D viewer :(</Text>
+      </View>
+    );
 
 
     return (
         <View style={{flex: 5}}>
-          {props.cubeType === "Pyraminx" || props.cubeType ===  "Megaminx" || props.cubeType ===   "Skewb" || props.cubeType ===  "Clock" ? sadComp : "" }
+          { props.cubeType === "Pyraminx" || props.cubeType ===  "Megaminx" || props.cubeType ===   "Skewb" || props.cubeType ===  "Clock" ? sadComp : "" }
             <GLView
                 onContextCreate={onContextCreate}
                 // Set height and width of GLView

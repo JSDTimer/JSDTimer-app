@@ -66,6 +66,24 @@ const Main = (props) => {
         <View style={[style.ButtonsContainer]}>
           <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube} />
         </View>
+        <View style={[style.statsCont]}>
+          <View style={[style.stats]}>
+            <Text style={[style.statsTitle]}>AO5</Text>
+            <Text>-</Text>
+          </View>
+          <View style={[style.stats]}>
+            <Text style={[style.statsTitle]}>MEAN</Text>
+            <Text>-</Text>
+          </View>
+          <View style={[style.stats]}>
+            <Text style={[style.statsTitle]}>BEST</Text>
+            <Text>-</Text>
+          </View>
+          <View style={[style.stats]}>
+            <Text style={[style.statsTitle]}>LAST</Text>
+            <Text>-</Text>
+          </View>
+        </View>
       </SafeAreaView>
   );
 };
@@ -132,9 +150,26 @@ const style = StyleSheet.create({
     flexDirection: "column"
   },
   ButtonsContainer: {
-    paddingBottom: 80,
+    paddingBottom: 50,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  statsCont: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-around",
+    backgroundColor: "rgb(71, 71, 71)",
+    margin: 30,
+    height: 60,
+    borderRadius: 10
+  },
+  stats: {
+    margin: 10,
+  },
+  statsTitle: {
+    fontSize: 15,
+    fontWeight: "bold",
+    color: "#FFFFFF"
   }
 });
 
