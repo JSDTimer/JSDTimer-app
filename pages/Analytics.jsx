@@ -5,11 +5,13 @@ import Icon from 'react-native-vector-icons/MaterialIcons';
 import defaultstyles from '../styles/default';
 import { version } from '../global/globals';
 import { useSessionState } from '../global/store';
-import { Button as KtButton, Text as KtText } from '@ui-kitten/components';
+import { Button as KtButton, Text as KtText, useTheme } from '@ui-kitten/components';
+import { Session } from "../global/sessionsManager";
 
 
 const AnalyticsNav = (props) => {
     let navigation = props.navigation;
+    let currentTheme = useTheme();
 
     return (
         <SafeAreaView style={styles.container}>
@@ -28,7 +30,7 @@ const AnalyticsNav = (props) => {
                 hidden = {false}
             >
             </StatusBar>}
-            <Icon name="arrow-back" size={35} color="#CC165A" style={styles.icon} onPress={() => { navigation.goBack()}}></Icon>
+            <Icon name="arrow-back" size={35} color={currentTheme["color-primary-500"]} style={styles.icon} onPress={() => { navigation.goBack()}}></Icon>
         </SafeAreaView>
     )
 }
@@ -42,6 +44,14 @@ const Analytics = (props) => {
     let sessionID = useSessionState((state) => state.sessionID);
     let changeSessionID = useSessionState((state) => state.changeSessionID);
 
+
+    let currentSession = db.getArray("sessions")[sessionID - 1];
+    let sessionObj = new Session(currentSession.sessionID, currentSession.analytics.LyticsData.data, currentSession.name);
+    // console.log(currentSession);
+
+
+    console.log(sessionObj.analytics.ao5());
+
     function sessionManagerClicked() {
         navigation.navigate("SessionManager");
     }
@@ -51,6 +61,7 @@ const Analytics = (props) => {
         <View style={defaultstyles.main}>
             <AnalyticsNav navigation={navigation}></AnalyticsNav>
             <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Current Session: { sessionID == 1 ? "Default": sessionID }</Text>
+            <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.bigStat ]}>AO5: { sessionObj.analytics.ao5().toFixed(3) }</KtText>
             <SafeAreaView style={[styles.buttonsCont]}>
                 <KtButton style={{width: "90%"}}onPress={sessionManagerClicked}>{evaProps => <Text {...evaProps} style={styles.buttonText}>Session Manager</Text>}</KtButton>
             </SafeAreaView>      
@@ -114,6 +125,9 @@ const styles = StyleSheet.create({
         textAlign: "center",
         color: "#000000",
         fontWeight: "bold"
+    },
+    bigStat: {
+        margin: 20,
     }
 });
 

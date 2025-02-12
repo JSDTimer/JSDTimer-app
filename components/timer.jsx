@@ -19,6 +19,7 @@ const Timer = (props) => {
     let db = useSessionState((state) => state.db);
     let sessionID = useSessionState((state) => state.sessionID);
     let sessions = useSessionState((state) => state.sessions);
+    let updateAnalytics = useSessionState((state) => state.updateAnalytics);
     let changeSessionID = useSessionState((state) => state.changeSessionID);
     let changeSessionsArray = useSessionState((state) => state.changeSessionsArray);
 
@@ -27,7 +28,26 @@ const Timer = (props) => {
         if (timerStartedForUseEffect.current) {
             // Stop the timer
             elapsed.current += Date.now() - startTime.current;
+
+            //Store time
+            if(elapsed.current != 0) {
+                let data = new Data(elapsed.current, Date.now());
+    
+                //Get the current session
+                let currentSession = sessions[sessionID - 1];
+                let tempSessionObject = new Session(currentSession.sessionID, currentSession.analytics.LyticsData.data, currentSession.name);
+                tempSessionObject.analytics.LyticsData.push(data);
+    
+                console.log(tempSessionObject.analytics.LyticsData)
+                db.setArray("sessions", sessions);
+
+                //Change Analytics stuff
+                updateAnalytics(tempSessionObject);
+            }
         } else {
+            if(elapsed.current != 0) {
+                elapsed.current = 0;
+            }
             // Start the timer
             startTime.current = Date.now();
         }
@@ -72,17 +92,6 @@ const Timer = (props) => {
     }, []);
 
     useEffect(() => {
-        if(elapsed.current != 0) {
-            let data = new Data(elapsed.current, Date.now());
-
-            //Get the current session
-            let currentSession = sessions[sessionID - 1];
-            let tempSessionObject = new Session(currentSession.sessionID, currentSession.analytics.LyticsData.data);
-            tempSessionObject.analytics.LyticsData.push(data);
-
-            console.log(tempSessionObject.analytics.LyticsData)
-            db.setArray("sessions", sessions);
-        }
         startTime.current = 0;
         elapsed.current = 0;
         timerStartedForUseEffect.current = false;
@@ -98,12 +107,12 @@ const Timer = (props) => {
                     iOSUIKit.largeTitleEmphasizedWhite,
                     styles.timerStyle,
                     {
-                        color: isPressed ?  longPressed ? "green" : "red": "white"
+                        color: isPressed ?  longPressed &&  !timerStartedForUseEffect.current ? "green" : "red": "white"
                     },
                 ]}
-                onLongPress={() => { TimerControl(); pressMethod && pressMethod(); setLongPressed(true);}}
-                onPressIn={() => {setIsPressed(true)}}
-                onPressOut={() => {setIsPressed(false); setLongPressed(false)}}
+                onLongPress={() => {pressMethod && pressMethod(); setLongPressed(true);}}
+                onPressIn={() => {setIsPressed(true); timerStartedForUseEffect.current && TimerControl();}}
+                onPressOut={() => {setIsPressed(false); setLongPressed(false); longPressed && TimerControl();}}
             >
                 {formatted}
             </Text>

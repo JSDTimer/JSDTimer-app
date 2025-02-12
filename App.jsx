@@ -16,6 +16,7 @@ import Timer from './components/timer';
 import CubeDropdown from './components/dropdown';
 import { navigationRef } from './global/rootNavigation';
 import { useSessionState } from './global/store';
+import { Session } from "./global/sessionsManager";
 
 /* Pages */
 import Settings from './pages/settings';
@@ -33,6 +34,12 @@ const Main = (props) => {
   let currentTheme = useTheme();
   let cubeOptions = ["3x3", "2x2", "4x4", "5x5", "6x6", "7x7", "Pyraminx", "Megaminx", "Skewb", "Clock"];
   let [currentCubeType, setCurrentCubeType] = useState("3x3");
+  let db = useSessionState((state) => state.db);
+  let sessionID = useSessionState((state) => state.sessionID);
+  let ao5 = useSessionState((state) => state.ao5);
+
+  let currentSession = db.getArray("sessions")[sessionID - 1];
+  let sessionObj = new Session(currentSession.sessionID, currentSession.analytics.LyticsData.data, currentSession.name);
 
   let navigation = props.navigation;
   let route = props.route;
@@ -69,19 +76,19 @@ const Main = (props) => {
         <View style={[style.statsCont]}>
           <View style={[style.stats]}>
             <Text style={[style.statsTitle]}>AO5</Text>
-            <Text>-</Text>
+            <Text style={[style.statsText]}>{ ao5.toFixed(3) != 0? ao5.toFixed(3): 0 }</Text>
           </View>
           <View style={[style.stats]}>
             <Text style={[style.statsTitle]}>MEAN</Text>
-            <Text>-</Text>
+            <Text style={[style.statsText]}>-</Text>
           </View>
           <View style={[style.stats]}>
             <Text style={[style.statsTitle]}>BEST</Text>
-            <Text>-</Text>
+            <Text style={[style.statsText]}>-</Text>
           </View>
           <View style={[style.stats]}>
             <Text style={[style.statsTitle]}>LAST</Text>
-            <Text>-</Text>
+            <Text style={[style.statsText]}>{ sessionObj.analytics.last().toFixed(3) != 0? sessionObj.analytics.last().toFixed(3): 0 }</Text>
           </View>
         </View>
       </SafeAreaView>
@@ -158,18 +165,23 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "rgb(71, 71, 71)",
+    backgroundColor: "rgb(53, 53, 53)",
     margin: 30,
-    height: 60,
+    height: 80,
     borderRadius: 10
   },
   stats: {
     margin: 10,
   },
   statsTitle: {
-    fontSize: 15,
+    fontSize: 25,
     fontWeight: "bold",
     color: "#FFFFFF"
+  },
+  statsText: {
+    color: "#FFFFFF",
+    textAlign: "center",
+    paddingTop: 5,
   }
 });
 

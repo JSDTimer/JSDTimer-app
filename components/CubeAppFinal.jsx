@@ -335,7 +335,7 @@ const Cube = (props) => {
             <GLView
                 onContextCreate={onContextCreate}
                 // Set height and width of GLView
-                style={{ width: 400, height: 400 }}
+                style={{ width: 420, height: 400 }}
             />
         </View>
     )

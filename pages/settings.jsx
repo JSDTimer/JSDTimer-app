@@ -1,5 +1,6 @@
 import React, {useState, useEffect} from 'react';
 import {View, Text, StyleSheet, SafeAreaView, StatusBar ,Platform, ScrollView, Pressable, Button} from 'react-native';
+import { Button as KtButton, Text as KtText, useTheme } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { iOSUIKit } from 'react-native-typography';
 
@@ -12,7 +13,8 @@ import { clearEverything } from '../global/database';
 
 const SettingsNav = (props) => {
     let navigation = props.navigation;
-
+    let currentTheme = useTheme();
+    
     return (
         <SafeAreaView style={styles.container}>
         {Platform.OS === 'android' ? (
@@ -30,7 +32,7 @@ const SettingsNav = (props) => {
                 hidden = {false}
             >
             </StatusBar>}
-            <Icon name="arrow-back" size={35} color="#CC165A" style={styles.icon} onPress={() => { navigation.goBack()}}></Icon>
+            <Icon name="arrow-back" size={35} color={currentTheme["color-primary-500"]} style={styles.icon} onPress={() => { navigation.goBack()}}></Icon>
         </SafeAreaView>
     )
 }
