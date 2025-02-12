@@ -30,11 +30,23 @@ class Analytics {
 
         for(let i = 0; i < 5; i++) {
             let current = this.LyticsData.get(i);
-            console.log(current);
             result += (current.time / 1000);
         }
 
         return (result/5);
+    }
+
+    //AO12
+    ao12() {
+        if(this.LyticsData.size() < 12) return 0;
+        let result = 0;
+
+        for(let i = 0; i < 12; i++) {
+            let current = this.LyticsData.get(i);
+            result += (current.time / 1000);
+        }
+
+        return (result/12);
     }
 
     //Gets the last time
@@ -44,9 +56,38 @@ class Analytics {
         return result;
     }
 
+    //Mean
+    mean() {
+        if(this.LyticsData.size() == 0) return 0;
+        let result = 0;
+        let total = this.LyticsData.size();
+
+        for(let i = 0; i < total; i++) {
+            let current = this.LyticsData.get(i);
+            result += (current.time / 1000);
+        }
+
+        return (result/total);
+    }
+
     //Solves
     solves() {
         return this.LyticsData.size();
+    }
+
+    //The graph requires an array full of objects
+    toGraphData() {
+        let result = [];
+        let incr = 0;
+        let total = this.LyticsData.size();
+
+        for(let i = total - 1; i >= 0; i--) {
+            let current = this.LyticsData.get(i);
+            result[i] = {time: (current.time / 1000), solveNum: incr + 1};
+            incr++;
+        }
+
+        return result;
     }
 }
 

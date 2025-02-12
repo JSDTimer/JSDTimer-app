@@ -23,7 +23,7 @@ import Settings from './pages/settings';
 //@ts-ignore -weird bug from my IDE (remove this later if you want)
 import Analytics from './pages/analytics';
 //@ts-ignore
-import { SessionManager } from './pages/analytics';
+import { SessionManager, SessionCreator } from './pages/analytics';
 import { StorageSettings} from'./pages/settings';
 
 var Stack = createNativeStackNavigator();
@@ -37,6 +37,9 @@ const Main = (props) => {
   let db = useSessionState((state) => state.db);
   let sessionID = useSessionState((state) => state.sessionID);
   let ao5 = useSessionState((state) => state.ao5);
+  let ao12 = useSessionState((state) => state.ao12);
+  let mean = useSessionState((state) => state.mean);
+  let last = useSessionState((state) => state.last);
 
   let currentSession = db.getArray("sessions")[sessionID - 1];
   let sessionObj = new Session(currentSession.sessionID, currentSession.analytics.LyticsData.data, currentSession.name);
@@ -75,20 +78,20 @@ const Main = (props) => {
         </View>
         <View style={[style.statsCont]}>
           <View style={[style.stats]}>
-            <Text style={[style.statsTitle]}>AO5</Text>
+            <Text style={[style.statsTitle, {color: currentTheme["color-primary-500"]}]}>AO5</Text>
             <Text style={[style.statsText]}>{ ao5.toFixed(3) != 0? ao5.toFixed(3): "-" }</Text>
           </View>
           <View style={[style.stats]}>
-            <Text style={[style.statsTitle]}>AO12</Text>
-            <Text style={[style.statsText]}>-</Text>
+            <Text style={[style.statsTitle, {color: currentTheme["color-primary-500"]}]}>AO12</Text>
+            <Text style={[style.statsText]}>{ ao12.toFixed(3) != 0? ao12.toFixed(3): "-" }</Text>
           </View>
           <View style={[style.stats]}>
-            <Text style={[style.statsTitle]}>MEAN</Text>
-            <Text style={[style.statsText]}>-</Text>
+            <Text style={[style.statsTitle, {color: currentTheme["color-primary-500"]}]}>MEAN</Text>
+            <Text style={[style.statsText]}>{ mean.toFixed(3) != 0? mean.toFixed(3): "-" }</Text>
           </View>
           <View style={[style.stats]}>
-            <Text style={[style.statsTitle]}>LAST</Text>
-            <Text style={[style.statsText]}>{ sessionObj.analytics.last().toFixed(3) != 0? sessionObj.analytics.last().toFixed(3): "-" }</Text>
+            <Text style={[style.statsTitle, {color: currentTheme["color-primary-500"]}]}>LAST</Text>
+            <Text style={[style.statsText]}>{ last.toFixed(3) != 0? last.toFixed(3): "-" }</Text>
           </View>
         </View>
       </SafeAreaView>
@@ -121,6 +124,7 @@ const App = () => {
 
                 {/* Sub Pages for Analytics */}
                 <Stack.Screen name="SessionManager" component={SessionManager} options={{headerShown:false}}></Stack.Screen>
+                <Stack.Screen name="SessionCreator" component={SessionCreator} options={{headerShown:false}}></Stack.Screen>
               </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>

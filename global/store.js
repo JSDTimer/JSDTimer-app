@@ -50,8 +50,11 @@ export const useSessionState = create((set) => ({
     db: db,
     //Analytics stuff
     ao5: startSession.analytics.ao5(),
+    ao12: startSession.analytics.ao12(),
+    mean: startSession.analytics.mean(),
     last: startSession.analytics.last(),
     solves: startSession.analytics.solves(),
+    graphData: startSession.analytics.toGraphData(),
     changeSessionID: (newID) => {
         return set((state) => ({sessionID: newID}))
     },
@@ -59,9 +62,8 @@ export const useSessionState = create((set) => ({
         return set((state) => ({sessions: newArray}))
     },
 
-
     //Analytics stuff
     updateAnalytics(s) {
-        return set((state) => ({ao5: s.analytics.ao5(), last: s.analytics.last(), solves: s.analytics.solves()}))
+        return set((state) => ({ao5: s.analytics.ao5(), ao12: s.analytics.ao12(), mean: s.analytics.mean() ,last: s.analytics.last(), solves: s.analytics.solves(), graphData: s.analytics.toGraphData()}))
     },
 }))
