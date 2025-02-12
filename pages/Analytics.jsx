@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {View, Text, StyleSheet, SafeAreaView, StatusBar, ScrollView} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, StatusBar, ScrollView, FlatList} from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import defaultstyles from '../styles/default';
@@ -38,6 +38,23 @@ const AnalyticsNav = (props) => {
 }
 
 
+export const TimeBlock = (props) => {
+    let {time, currentObjTime} = props;
+    let currentTheme = useTheme();
+
+    let date = new Date(currentObjTime.date);
+
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={[styles.header, styles.timesView]}>
+                <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "center"}]}>{ time }</Text>
+                <Text style={[{color: "#FFFFFF", fontSize: 10, fontWeight: "bold", padding: 10, textAlign: "center"}]}>{ date.toLocaleDateString() }</Text>
+            </View>
+        </SafeAreaView>
+    )
+}
+
+
 const Analytics = (props) => {
     let navigation = props.navigation;
     let currentTheme = useTheme();
@@ -67,14 +84,16 @@ const Analytics = (props) => {
     let font = matchFont(fontStyle);
 
 
-    console.log(graphData);
-
     function sessionManagerClicked() {
         navigation.navigate("SessionManager");
     }
 
     function sessionCreationClicked() {
         navigation.navigate("SessionCreator");
+    }
+
+    function timesClicked() {
+        navigation.navigate("Times");
     }
 
 
@@ -106,22 +125,28 @@ const Analytics = (props) => {
                     </View>
                 </View>
                 <View style={styles.graphCont}>
-                    <CartesianChart data={graphData} 
-                    xKey="solveNum"  
-                    yKeys={["time"]} 
-                    padding={10} 
-                    xAxis={{font: font, labelColor: "#FFFFFF"}} 
-                    yAxis={[{yKeys: ["time"], font: font, labelColor: "#FFFFFF"}]} 
-                    frame={{lineColor: currentTheme["color-primary-500"], lineWidth: {left: 1, bottom: 1, top: 0, right: 0}}}
-                    domainPadding={10}
-                    >
-                        {({points}) => (
-                            <Line points={points.time} color={currentTheme["color-primary-500"]} strokeWidth={5} curveType="natural"></Line>
-                        )}
-                    </CartesianChart>
+                    { graphData.length < 2 ? (
+                        <View style={[styles.TextErrCont]}>
+                            <Text style={[{color: currentTheme["color-primary-500"]}, {textAlign: "center", fontWeight: "bold", fontSize: 25}]}>Not enough data to graph :(</Text>
+                        </View>
+                    ): (
+                        <CartesianChart data={graphData} 
+                        xKey="solveNum"  
+                        yKeys={["time"]} 
+                        padding={10} 
+                        xAxis={{font: font, labelColor: "#FFFFFF"}} 
+                        yAxis={[{yKeys: ["time"], font: font, labelColor: "#FFFFFF"}]} 
+                        frame={{lineColor: currentTheme["color-primary-500"], lineWidth: {left: 1, bottom: 1, top: 0, right: 0}}}
+                        domainPadding={10}
+                        >
+                            {({points}) => (
+                                <Line points={points.time} color={currentTheme["color-primary-500"]} strokeWidth={5} curveType="natural"></Line>
+                            )}
+                        </CartesianChart>
+                    )}
                 </View>
                 <SafeAreaView style={[styles.buttonTopCont]}>
-                    <KtButton style={[{width: "45%"}, styles.tinyButtons]}>{evaProps => <View style={[styles.iconTextCont]}><Icon name="access-time" size={30} color={currentTheme["color-warning-100"]} style={[styles.subIcon]}></Icon><Text {...evaProps} style={[styles.buttonText, {paddingRight: 20}]}>Times</Text></View>}</KtButton>
+                    <KtButton style={[{width: "45%"}, styles.tinyButtons]} onPress={timesClicked}>{evaProps => <View style={[styles.iconTextCont]}><Icon name="access-time" size={30} color={currentTheme["color-warning-100"]} style={[styles.subIcon]}></Icon><Text {...evaProps} style={[styles.buttonText, {paddingRight: 20}]}>Times</Text></View>}</KtButton>
                     <KtButton style={[{width: "45%"}, styles.tinyButtons]} onPress={sessionCreationClicked}>{evaProps => <View style={[styles.iconTextCont]}><Icon name="add" size={30} color={currentTheme["color-warning-100"]} style={[styles.subIcon]}></Icon><Text {...evaProps} style={[styles.buttonText, {paddingRight: 20}]}>New Session</Text></View>}</KtButton>
                 </SafeAreaView>
                 <SafeAreaView style={[styles.buttonsCont]}>
@@ -143,8 +168,7 @@ export const SessionManager = (props) => {
     let db = useSessionState((state) => state.db);
     let sessionID = useSessionState((state) => state.sessionID);
     let changeSessionID = useSessionState((state) => state.changeSessionID);
-
-    console.log(db.getArray("sessions"));
+    
 
     return (
         <View style={defaultstyles.main}>
@@ -164,12 +188,48 @@ export const SessionCreator = (props) => {
     let sessionID = useSessionState((state) => state.sessionID);
     let changeSessionID = useSessionState((state) => state.changeSessionID);
 
-    console.log(db.getArray("sessions"));
+     console.log(db.getArray("sessions"));
 
     return (
         <View style={defaultstyles.main}>
             <AnalyticsNav navigation={navigation}></AnalyticsNav>
             <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Creator</Text>
+        </View>
+    )
+}
+
+
+export const TimesViewer = (props) => {
+    let navigation = props.navigation;
+
+    //Database stuff
+    let db = useSessionState((state) => state.db);
+    let sessionID = useSessionState((state) => state.sessionID);
+    let changeSessionID = useSessionState((state) => state.changeSessionID);
+
+    let currentSession = db.getArray("sessions")[sessionID - 1];
+    let sessionObj = new Session(currentSession.sessionID, currentSession.analytics.LyticsData.data, currentSession.name);
+    
+    console.log(sessionObj);
+
+    let Grid = sessionObj.analytics.LyticsData.data.map((obj, i) => {
+        return {...obj, key: i};
+    });
+
+    console.log(Grid)
+
+    return (
+        <View style={defaultstyles.main}>
+            <AnalyticsNav navigation={navigation}></AnalyticsNav>
+            <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Times for {sessionObj.name}</Text>
+            <FlatList
+                    data={Grid}
+                    numColumns={3}
+                    horizontal={false}
+                    renderItem={({item}) => <TimeBlock key={item.key} time={(item.time/1000).toFixed(3)} currentObjTime={item}></TimeBlock>}
+            >
+
+            </FlatList>
         </View>
     )
 }
@@ -250,7 +310,20 @@ const styles = StyleSheet.create({
         margin: 10,
         borderRadius: 10,
         height: 400
-    }
+    },
+    TextErrCont: {
+        display: "flex",
+        justifyContent: "space-around",
+        textAlign: "center"
+    },
+    timesView: {
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "rgb(53, 53, 53)",
+        borderRadius: 10,
+        height: 50,
+        width: 80
+    },
 });
 
 export default Analytics;

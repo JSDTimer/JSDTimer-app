@@ -23,7 +23,7 @@ import Settings from './pages/settings';
 //@ts-ignore -weird bug from my IDE (remove this later if you want)
 import Analytics from './pages/analytics';
 //@ts-ignore
-import { SessionManager, SessionCreator } from './pages/analytics';
+import { SessionManager, SessionCreator, TimesViewer } from './pages/analytics';
 import { StorageSettings} from'./pages/settings';
 
 var Stack = createNativeStackNavigator();
@@ -125,6 +125,7 @@ const App = () => {
                 {/* Sub Pages for Analytics */}
                 <Stack.Screen name="SessionManager" component={SessionManager} options={{headerShown:false}}></Stack.Screen>
                 <Stack.Screen name="SessionCreator" component={SessionCreator} options={{headerShown:false}}></Stack.Screen>
+                <Stack.Screen name="Times" component={TimesViewer} options={{headerShown:false}}></Stack.Screen>
               </Stack.Navigator>
           </NavigationContainer>
         </SafeAreaView>
