@@ -7,6 +7,8 @@ import { Data, Session } from "../global/sessionsManager"
 
 const Timer = (props) => {
     let pressMethod = props.onPress;
+    let scramble = props.scramble;
+    let type = props.type;
     let [timerStarted, setTimerStarted] = useState(false);
     let timerStartedForUseEffect = useRef(false);
     let startTime = useRef(0);
@@ -31,7 +33,7 @@ const Timer = (props) => {
 
             //Store time
             if(elapsed.current != 0) {
-                let data = new Data(elapsed.current, Date.now());
+                let data = new Data(elapsed.current, Date.now(), props.type, props.scramble);
     
                 //Get the current session
                 let currentSession = sessions[sessionID - 1];

@@ -51,6 +51,7 @@ export const useSessionState = create((set) => ({
     //Analytics stuff
     ao5: startSession.analytics.ao5(),
     last: startSession.analytics.last(),
+    solves: startSession.analytics.solves(),
     changeSessionID: (newID) => {
         return set((state) => ({sessionID: newID}))
     },
@@ -61,6 +62,6 @@ export const useSessionState = create((set) => ({
 
     //Analytics stuff
     updateAnalytics(s) {
-        return set((state) => ({ao5: s.analytics.ao5(), last: s.analytics.last()}))
+        return set((state) => ({ao5: s.analytics.ao5(), last: s.analytics.last(), solves: s.analytics.solves()}))
     },
 }))

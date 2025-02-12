@@ -10,9 +10,11 @@ export class Session {
 
 
 export class Data {
-    constructor(time, date) {
+    constructor(time, date, type, scramble) {
         this.time = time;
         this.date = date;
+        this.type = type;
+        this.scramble = scramble;
     }
 }
 
@@ -23,6 +25,7 @@ class Analytics {
 
     //AO5
     ao5() {
+        if(this.LyticsData.size() < 5) return 0;
         let result = 0;
 
         for(let i = 0; i < 5; i++) {
@@ -36,8 +39,14 @@ class Analytics {
 
     //Gets the last time
     last() {
+        if(this.LyticsData.size() == 0) return 0;
         let result = (this.LyticsData.peek().time) / 1000;
         return result;
+    }
+
+    //Solves
+    solves() {
+        return this.LyticsData.size();
     }
 }
 

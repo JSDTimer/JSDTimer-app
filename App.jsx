@@ -68,7 +68,7 @@ const Main = (props) => {
         <TouchableWithoutFeedback onPress={handleScreenPress}>
           {scrambleText}
         </TouchableWithoutFeedback>
-        <Timer scramble={scramble} />
+        <Timer scramble={scramble.join(" ")} type={currentCubeType} />
         <NewCube scramble={scramble} nav={navigation} cubeType={currentCubeType} />
         <View style={[style.ButtonsContainer]}>
           <CubeDropdown cubeOptions={cubeOptions} onSelect={changeCurrentCube} />
@@ -76,19 +76,19 @@ const Main = (props) => {
         <View style={[style.statsCont]}>
           <View style={[style.stats]}>
             <Text style={[style.statsTitle]}>AO5</Text>
-            <Text style={[style.statsText]}>{ ao5.toFixed(3) != 0? ao5.toFixed(3): 0 }</Text>
+            <Text style={[style.statsText]}>{ ao5.toFixed(3) != 0? ao5.toFixed(3): "-" }</Text>
+          </View>
+          <View style={[style.stats]}>
+            <Text style={[style.statsTitle]}>AO12</Text>
+            <Text style={[style.statsText]}>-</Text>
           </View>
           <View style={[style.stats]}>
             <Text style={[style.statsTitle]}>MEAN</Text>
             <Text style={[style.statsText]}>-</Text>
           </View>
           <View style={[style.stats]}>
-            <Text style={[style.statsTitle]}>BEST</Text>
-            <Text style={[style.statsText]}>-</Text>
-          </View>
-          <View style={[style.stats]}>
             <Text style={[style.statsTitle]}>LAST</Text>
-            <Text style={[style.statsText]}>{ sessionObj.analytics.last().toFixed(3) != 0? sessionObj.analytics.last().toFixed(3): 0 }</Text>
+            <Text style={[style.statsText]}>{ sessionObj.analytics.last().toFixed(3) != 0? sessionObj.analytics.last().toFixed(3): "-" }</Text>
           </View>
         </View>
       </SafeAreaView>
