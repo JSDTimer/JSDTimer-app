@@ -47,7 +47,6 @@ export const TimeBlock = (props) => {
     let date = new Date(currentObjTime.date);
 
     function toggleModal() {
-        console.log("RAH")
         setShowModal(!showModal);
     }
 
@@ -56,7 +55,10 @@ export const TimeBlock = (props) => {
             <View style={[{ flex: 1 }]}>
                 <Modal isVisible={showModal}>
                     <View style={[{ flex: 1 }, styles.ModalBox]}>
-                        <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header, {textAlign: "center"}]}>Details</KtText>
+                        <View style={[{display: "flex", flexDirection: "row"}]}>
+                            <Icon name="close" size={35} color={currentTheme["color-primary-500"]} style={[{marginTop: 35, marginLeft: 30}]} onPress={toggleModal}></Icon>
+                            <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header, {textAlign: "center"}]}>Details</KtText>
+                        </View>
                         <View style={[{margin: 10}]}>
                             <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.statText, {color: currentTheme["color-primary-500"]}]}>DATE</KtText>
                             <KtText style={[defaultstyles.text, {fontWeight: "bold"}, {fontSize: 20}, {padding: 20}]}>{ date.toLocaleString() }</KtText>
