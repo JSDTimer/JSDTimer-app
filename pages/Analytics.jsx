@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import {View, Text, StyleSheet, SafeAreaView, StatusBar, ScrollView, FlatList} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, StatusBar, ScrollView, FlatList, Pressable} from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import defaultstyles from '../styles/default';
@@ -8,6 +8,7 @@ import { useSessionState } from '../global/store';
 import { CartesianChart, Line } from "victory-native";
 import { useFont, matchFont } from "@shopify/react-native-skia";
 import { Button as KtButton, Text as KtText, useTheme } from '@ui-kitten/components';
+import Modal from "react-native-modal";
 import { Session } from "../global/sessionsManager";
 
 
@@ -41,16 +42,53 @@ const AnalyticsNav = (props) => {
 export const TimeBlock = (props) => {
     let {time, currentObjTime} = props;
     let currentTheme = useTheme();
+    let [showModal, setShowModal] = useState(false);
 
     let date = new Date(currentObjTime.date);
 
-    return (
-        <SafeAreaView style={styles.container}>
-            <View style={[styles.header, styles.timesView]}>
-                <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "center"}]}>{ time }</Text>
-                <Text style={[{color: "#FFFFFF", fontSize: 10, fontWeight: "bold", padding: 10, textAlign: "center"}]}>{ date.toLocaleDateString() }</Text>
+    function toggleModal() {
+        console.log("RAH")
+        setShowModal(!showModal);
+    }
+
+    function MoreTimeInfo() {
+        return (
+            <View style={[{ flex: 1 }]}>
+                <Modal isVisible={showModal}>
+                    <View style={[{ flex: 1 }, styles.ModalBox]}>
+                        <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header, {textAlign: "center"}]}>Details</KtText>
+                        <View style={[{margin: 10}]}>
+                            <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.statText, {color: currentTheme["color-primary-500"]}]}>DATE</KtText>
+                            <KtText style={[defaultstyles.text, {fontWeight: "bold"}, {fontSize: 20}, {padding: 20}]}>{ date.toLocaleString() }</KtText>
+                        </View>
+                        <View style={[{margin: 10}]}>
+                            <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.statText, {color: currentTheme["color-primary-500"]}]}>TIME</KtText>
+                            <KtText style={[defaultstyles.text, {fontWeight: "bold"}, {fontSize: 20}, {padding: 20}]}>{ time }s</KtText>
+                        </View>
+                        <View style={[{margin: 10}]}>
+                            <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.statText, {color: currentTheme["color-primary-500"]}]}>TYPE</KtText>
+                            <KtText style={[defaultstyles.text, {fontWeight: "bold"}, {fontSize: 20}, {padding: 20}]}>{ currentObjTime.type }</KtText>
+                        </View>
+                        <View style={[{margin: 10}]}>
+                            <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.statText, {color: currentTheme["color-primary-500"]}]}>SCRAMBLE</KtText>
+                            <KtText style={[defaultstyles.text, {fontWeight: "bold"}, {fontSize: 20}, {padding: 20}]}>{ currentObjTime.scramble }</KtText>
+                        </View>
+                    </View>
+                </Modal>
             </View>
-        </SafeAreaView>
+        )
+    }
+
+    return (
+        <Pressable onPress={toggleModal}>
+            <SafeAreaView style={styles.container}>
+                <MoreTimeInfo></MoreTimeInfo>
+                <View style={[styles.header, styles.timesView]}>
+                    <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "center"}]}>{ time }</Text>
+                    <Text style={[{color: "#FFFFFF", fontSize: 10, fontWeight: "bold", padding: 10, textAlign: "center"}]}>{ date.toLocaleDateString() === (new Date(Date.now()).toLocaleDateString())? date.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true }) : date.toLocaleDateString() }</Text>
+                </View>
+            </SafeAreaView>
+        </Pressable>
     )
 }
 
@@ -216,6 +254,8 @@ export const TimesViewer = (props) => {
         return {...obj, key: i};
     });
 
+    Grid = Grid.reverse();
+
     console.log(Grid)
 
     return (
@@ -324,6 +364,13 @@ const styles = StyleSheet.create({
         height: 50,
         width: 80
     },
+    ModalBox: {
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "rgb(53, 53, 53)",
+        borderRadius: 10,
+        height: 50,
+    }
 });
 
 export default Analytics;
