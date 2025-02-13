@@ -7,7 +7,7 @@ import { version } from '../global/globals';
 import { useSessionState } from '../global/store';
 import { CartesianChart, Line } from "victory-native";
 import { useFont, matchFont } from "@shopify/react-native-skia";
-import { Button as KtButton, Text as KtText, useTheme } from '@ui-kitten/components';
+import { Button as KtButton, Text as KtText, useTheme, Input } from '@ui-kitten/components';
 import Modal from "react-native-modal";
 import { Session } from "../global/sessionsManager";
 
@@ -39,7 +39,7 @@ const AnalyticsNav = (props) => {
 }
 
 
-export const TimeBlock = (props) => {
+const TimeBlock = (props) => {
     let {time, currentObjTime} = props;
     let currentTheme = useTheme();
     let [showModal, setShowModal] = useState(false);
@@ -91,6 +91,21 @@ export const TimeBlock = (props) => {
                 </View>
             </SafeAreaView>
         </Pressable>
+    )
+}
+
+const SessionBlock = (props) => {
+    let { name, currentObjSession } = props;
+    let navigation = props.navigation;
+    let currentTheme = useTheme();
+
+    //Replace the SessionBlock with swipable later
+    return (
+        <SafeAreaView style={styles.container}>
+            <View style={styles.sessionBlock}>
+                <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "left"}]}> { name.toUpperCase() } </Text>
+            </View>
+        </SafeAreaView>
     )
 }
 
@@ -208,12 +223,26 @@ export const SessionManager = (props) => {
     let db = useSessionState((state) => state.db);
     let sessionID = useSessionState((state) => state.sessionID);
     let changeSessionID = useSessionState((state) => state.changeSessionID);
+
+    let sessions = db.getArray("sessions");
+
+    let blocks = sessions.map((obj, i) => {
+        return {...obj, key: i};
+    });
+
+    console.log(blocks);
     
 
     return (
         <View style={defaultstyles.main}>
             <AnalyticsNav navigation={navigation}></AnalyticsNav>
             <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Session Manager</Text>
+            <FlatList
+                    data={blocks}
+                    numColumns={1}
+                    horizontal={false}
+                    renderItem={({item}) => <SessionBlock name={item.name} currentObjSession={item}></SessionBlock>}
+            ></FlatList>
         </View>
     )
 }
@@ -221,19 +250,51 @@ export const SessionManager = (props) => {
 
 export const SessionCreator = (props) => {
     let navigation = props.navigation;
+    let [name, setName] = useState("");
+    let [status, setStatus] = useState("basic");
+    let [placeholder, setPlaceHolder] = useState("Enter a name");
 
 
     //Database stuff
     let db = useSessionState((state) => state.db);
-    let sessionID = useSessionState((state) => state.sessionID);
-    let changeSessionID = useSessionState((state) => state.changeSessionID);
+    let changeSessionsArray = useSessionState((state) => state.changeSessionsArray);
 
-     console.log(db.getArray("sessions"));
+    let sessions = db.getArray("sessions");
+
+     function createClicked() {
+        let nextID = sessions.length + 1;
+
+        let newSession = new Session(nextID, [], name);
+        db.setArray("sessions", [...sessions, newSession]);
+        sessions = db.getArray("sessions");
+        changeSessionsArray(sessions);
+        navigation.goBack();
+     }
+
+     function showError() {
+        setName("");
+        setStatus("warning");
+        setPlaceHolder("Name must be under 11 characters");
+     }
+
+     function nameFn(v) {
+        if(status !== "basic") setStatus("basic");
+        setName(v);
+        setPlaceHolder("Enter a name");
+     }
 
     return (
         <View style={defaultstyles.main}>
             <AnalyticsNav navigation={navigation}></AnalyticsNav>
             <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Creator</Text>
+            <Input style={[{margin: 10}, {width: "95%"}]} 
+            placeholder={placeholder}
+            size="large" 
+            value={name} 
+            status={status}
+            onChangeText={(v) => {v.length > 10 ? showError(): nameFn(v)}}>
+            </Input>
+            <KtButton style={[{width: "95%"}, {margin: 10}]} onPress={createClicked}>{evaProps => <Text {...evaProps} style={styles.buttonText}>Create Session</Text>}</KtButton>
         </View>
     )
 }
@@ -258,8 +319,6 @@ export const TimesViewer = (props) => {
 
     Grid = Grid.reverse();
 
-    console.log(Grid)
-
     return (
         <View style={defaultstyles.main}>
             <AnalyticsNav navigation={navigation}></AnalyticsNav>
@@ -270,7 +329,6 @@ export const TimesViewer = (props) => {
                     horizontal={false}
                     renderItem={({item}) => <TimeBlock key={item.key} time={(item.time/1000).toFixed(3)} currentObjTime={item}></TimeBlock>}
             >
-
             </FlatList>
         </View>
     )
@@ -372,6 +430,15 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(53, 53, 53)",
         borderRadius: 10,
         height: 50,
+    },
+    sessionBlock: {
+        display: "flex",
+        flexDirection: "column",
+        backgroundColor: "rgb(53, 53, 53)",
+        borderRadius: 10,
+        height: 150,
+        width: "100%",
+        marginTop: 20,
     }
 });
 
