@@ -104,6 +104,8 @@ const SessionBlock = (props) => {
 
     let tempSession = new Session(currentObjSession.sessionID, currentObjSession.analytics.LyticsData.data, currentObjSession.name);
 
+    let bestSingle = tempSession.analytics.bestSingle();
+
     function sessionBlockClicked() {
         changeSessionID(tempSession.sessionID);
         updateAnalytics(tempSession);
@@ -117,7 +119,8 @@ const SessionBlock = (props) => {
                 <View style={[styles.sessionBlock]}>
                     <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "left"}]}>NAME: "{ name.toUpperCase() }" ID: { tempSession.sessionID } </Text>
                     <View style={{display: "flex", flexDirection: "column"}}>
-                        <Text style={[{color: "white", fontSize: 45, fontWeight: "bold", padding: 10, textAlign: "left"}]}> { tempSession.analytics.solves() } </Text>
+                        <Text style={[{color: "white", fontSize: 25, fontWeight: "bold", padding: 10, textAlign: "left"}]}>SOLVES:{ tempSession.analytics.solves() }</Text>
+                        <Text style={[{color: "white", fontSize: 25, fontWeight: "bold", padding: 10, textAlign: "left"}]}>BEST: <Text style={[{color: currentTheme["color-success-500"]}]}>{ bestSingle == 0? "-": bestSingle }</Text></Text>
                     </View>          
                 </View>
             </Pressable>
@@ -452,9 +455,10 @@ const styles = StyleSheet.create({
         flexDirection: "column",
         backgroundColor: "rgba(100, 100, 100, 0.3)",
         borderRadius: 10,
-        height: 150,
+        height: "auto",
         width: "100%",
-        marginTop: 20,
+        marginTop: 10,
+        padding: 20,
     }
 });
 

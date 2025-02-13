@@ -75,6 +75,26 @@ class Analytics {
         return this.LyticsData.size();
     }
 
+    //Best singles
+    bestSingle() {
+        if(this.LyticsData.size() == 0) return 0;
+        let result = 0;
+        let total = this.LyticsData.size();
+
+        for(let i = 0; i < total; i++) {
+            let current = this.LyticsData.get(i);
+            let time = (current.time / 1000)
+            
+            if(result == 0) {
+                result = time;
+            } else if(result > time) {
+                result = time;
+            }
+        }
+
+        return result;
+    }
+
     //The graph requires an array full of objects
     toGraphData() {
         let result = [];
