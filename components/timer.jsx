@@ -33,7 +33,7 @@ const Timer = (props) => {
 
             //Store time
             if(elapsed.current != 0) {
-                let data = new Data(elapsed.current, Date.now(), props.type, props.scramble);
+                let data = new Data(elapsed.current, Date.now(), props.type, props.scramble.length == 0 ? "NO SCRAMBLE": props.scramble);
     
                 //Get the current session
                 let currentSession = sessions[sessionID - 1];

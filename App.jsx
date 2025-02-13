@@ -159,7 +159,8 @@ const style = StyleSheet.create({
     fontWeight: "bold"
   },
   container: {
-    flexDirection: "column"
+    flexDirection: "column",
+    height: "100%"
   },
   ButtonsContainer: {
     paddingBottom: 50,
@@ -170,7 +171,7 @@ const style = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     justifyContent: "space-around",
-    backgroundColor: "rgb(53, 53, 53)",
+    backgroundColor: "rgba(100, 100, 100, 0.3)",
     margin: 30,
     height: 80,
     borderRadius: 10

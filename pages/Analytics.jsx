@@ -9,7 +9,6 @@ import { CartesianChart, Line } from "victory-native";
 import { useFont, matchFont } from "@shopify/react-native-skia";
 import { Button as KtButton, Text as KtText, useTheme, Input } from '@ui-kitten/components';
 import Modal from "react-native-modal";
-import {Swipeable } from 'react-native-gesture-handler/Swipeable'; //Deprecated but this version works with the version of react native used
 import { Session } from "../global/sessionsManager";
 
 
@@ -99,30 +98,29 @@ const SessionBlock = (props) => {
     let { name, currentObjSession } = props;
     let navigation = props.navigation;
     let currentTheme = useTheme();
-
-    function renderRightSwipe() {
-        console.log("Swipe")
-        return (
-            <RectButton>
-                <View style={[styles.sessionBlock, {backgroundColor: "red"}]}>
-                    <Text>You found me</Text>
-                </View>
-            </RectButton>
-        )
-    }
+    let changeSessionID = useSessionState((state) => state.changeSessionID);
+    let changeSessionsArray = useSessionState((state) => state.changeSessionsArray);
+    let updateAnalytics = useSessionState((state) => state.updateAnalytics);
 
     let tempSession = new Session(currentObjSession.sessionID, currentObjSession.analytics.LyticsData.data, currentObjSession.name);
 
+    function sessionBlockClicked() {
+        changeSessionID(tempSession.sessionID);
+        updateAnalytics(tempSession);
+        db.setInt("sessionID", tempSession.sessionID);
+        navigation.goBack();
+    }
 
     return (
         <SafeAreaView style={styles.container}>
-            <Swipeable containerStyle={styles.sessionBlock} renderRightActions={renderRightSwipe}>
-                <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "left"}]}> { name.toUpperCase() } </Text>
-                <View style={{display: "flex", flexDirection: "row"}}>
-                    <Text style={[{color: currentTheme["color-primary-500"], fontSize: 15, fontWeight: "bold", padding: 10, textAlign: "left"}]}>SOLVES:</Text>
-                    <Text style={[{color: "white", fontSize: 15, fontWeight: "bold", paddingTop: 10, textAlign: "left"}]}> { tempSession.analytics.solves() } </Text>
-                </View>          
-            </Swipeable>
+            <Pressable onPress={sessionBlockClicked} style={[{width: "100%"}]}>
+                <View style={[styles.sessionBlock]}>
+                    <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "left"}]}>NAME: "{ name.toUpperCase() }" ID: { tempSession.sessionID } </Text>
+                    <View style={{display: "flex", flexDirection: "column"}}>
+                        <Text style={[{color: "white", fontSize: 45, fontWeight: "bold", padding: 10, textAlign: "left"}]}> { tempSession.analytics.solves() } </Text>
+                    </View>          
+                </View>
+            </Pressable>
         </SafeAreaView>
     )
 }
@@ -173,7 +171,7 @@ const Analytics = (props) => {
     return (
         <View style={defaultstyles.main}>
             <AnalyticsNav navigation={navigation}></AnalyticsNav>
-            <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Current Session: { sessionID == 1 ? "Default": sessionID }</Text>
+            <Text style={[iOSUIKit.largeTitleEmphasizedWhite, styles.header]}>Current Session: { sessionID == 1 ? "Default": sessionObj.name }</Text>
             <ScrollView>
                 <View style={[{display: "flex", flexDirection: "row"}]}>
                     <View style={[styles.basicStats, {width: "45%"}]}>
@@ -259,7 +257,7 @@ export const SessionManager = (props) => {
                     data={blocks}
                     numColumns={1}
                     horizontal={false}
-                    renderItem={({item}) => <SessionBlock name={item.name} currentObjSession={item}></SessionBlock>}
+                    renderItem={({item}) => <SessionBlock navigation={navigation} name={item.name} currentObjSession={item}></SessionBlock>}
             ></FlatList>
         </View>
     )
@@ -411,7 +409,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-around",
-        backgroundColor: "rgb(53, 53, 53)",
+        backgroundColor: "rgba(100, 100, 100, 0.3)",
         margin: 10,
         height: 200,
         borderRadius: 10
@@ -424,7 +422,7 @@ const styles = StyleSheet.create({
         display: "flex",
         flexDirection: "column",
         justifyContent: "space-around",
-        backgroundColor: "rgb(53, 53, 53)",
+        backgroundColor: "rgba(100, 100, 100, 0.3)",
         margin: 10,
         borderRadius: 10,
         height: 400
@@ -437,7 +435,7 @@ const styles = StyleSheet.create({
     timesView: {
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "rgb(53, 53, 53)",
+        backgroundColor: "rgba(100, 100, 100, 0.3)",
         borderRadius: 10,
         height: 50,
         width: 80
@@ -445,14 +443,14 @@ const styles = StyleSheet.create({
     ModalBox: {
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "rgb(53, 53, 53)",
+        backgroundColor: "rgb(38, 38, 38)",
         borderRadius: 10,
         height: 50,
     },
     sessionBlock: {
         display: "flex",
         flexDirection: "column",
-        backgroundColor: "rgb(53, 53, 53)",
+        backgroundColor: "rgba(100, 100, 100, 0.3)",
         borderRadius: 10,
         height: 150,
         width: "100%",

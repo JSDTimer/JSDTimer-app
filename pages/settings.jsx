@@ -40,6 +40,7 @@ const SettingsNav = (props) => {
 const Settings = (props) => {
     let [versionString, _] = useState(version);
     let navigation = props.navigation;
+    let currentTheme = useTheme();
 
     function navigateToStorage() {
         navigation.navigate("StorageSettings");
@@ -52,10 +53,10 @@ const Settings = (props) => {
             <View style={styles.parentview}>
                 <ScrollView style={styles.scrollview}>
                     <View style={[styles.settingsContainer]}>
-                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="animation" size={30} color="#CC165A" style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Themes</Text></View></Pressable>
-                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="apps" size={30} color="#CC165A" style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Cube</Text></View></Pressable>
-                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="backup-table" size={30} color="#CC165A" style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Storage</Text></View></Pressable>
-                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="app-settings-alt" size={30} color="#CC165A" style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Settings</Text></View></Pressable>
+                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="animation" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Themes</Text></View></Pressable>
+                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="apps" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Cube</Text></View></Pressable>
+                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="backup-table" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Storage</Text></View></Pressable>
+                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="app-settings-alt" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Settings</Text></View></Pressable>
                     </View>
                 </ScrollView>
             </View>
