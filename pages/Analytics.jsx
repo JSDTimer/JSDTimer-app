@@ -9,6 +9,7 @@ import { CartesianChart, Line } from "victory-native";
 import { useFont, matchFont } from "@shopify/react-native-skia";
 import { Button as KtButton, Text as KtText, useTheme, Input } from '@ui-kitten/components';
 import Modal from "react-native-modal";
+import {Swipeable } from 'react-native-gesture-handler/Swipeable'; //Deprecated but this version works with the version of react native used
 import { Session } from "../global/sessionsManager";
 
 
@@ -99,12 +100,29 @@ const SessionBlock = (props) => {
     let navigation = props.navigation;
     let currentTheme = useTheme();
 
-    //Replace the SessionBlock with swipable later
+    function renderRightSwipe() {
+        console.log("Swipe")
+        return (
+            <RectButton>
+                <View style={[styles.sessionBlock, {backgroundColor: "red"}]}>
+                    <Text>You found me</Text>
+                </View>
+            </RectButton>
+        )
+    }
+
+    let tempSession = new Session(currentObjSession.sessionID, currentObjSession.analytics.LyticsData.data, currentObjSession.name);
+
+
     return (
         <SafeAreaView style={styles.container}>
-            <View style={styles.sessionBlock}>
+            <Swipeable containerStyle={styles.sessionBlock} renderRightActions={renderRightSwipe}>
                 <Text style={[{color: currentTheme["color-primary-500"], fontSize: 20, fontWeight: "bold", padding: 10, textAlign: "left"}]}> { name.toUpperCase() } </Text>
-            </View>
+                <View style={{display: "flex", flexDirection: "row"}}>
+                    <Text style={[{color: currentTheme["color-primary-500"], fontSize: 15, fontWeight: "bold", padding: 10, textAlign: "left"}]}>SOLVES:</Text>
+                    <Text style={[{color: "white", fontSize: 15, fontWeight: "bold", paddingTop: 10, textAlign: "left"}]}> { tempSession.analytics.solves() } </Text>
+                </View>          
+            </Swipeable>
         </SafeAreaView>
     )
 }
