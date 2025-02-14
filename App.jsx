@@ -24,7 +24,7 @@ import Settings from './pages/settings';
 import Analytics from './pages/analytics';
 //@ts-ignore
 import { SessionManager, SessionCreator, TimesViewer } from './pages/analytics';
-import { StorageSettings} from'./pages/settings';
+import { StorageSettings, Themes } from'./pages/settings';
 
 var Stack = createNativeStackNavigator();
 
@@ -99,9 +99,10 @@ const Main = (props) => {
 };
 
 const App = () => {
-  let [theme, setTheme] = useState("defaultTheme");
   //Database stuff
   let db = useSessionState((state) => state.db);
+  let theme = useSessionState((state) => state.theme)
+  let changeTheme = useSessionState((state) => state.changeTheme)
 
   //This method can be used when you import the ThemeContext in other components
   function toggleTheme(selectedTheme) {
@@ -109,7 +110,7 @@ const App = () => {
   }
 
   return (
-    <ThemeContext.Provider value={{theme, toggleTheme}}>
+    <ThemeContext.Provider value={{theme, changeTheme}}>
       <ApplicationProvider {...eva} theme={{...eva.dark, ...themes[theme]}}>
         <IconRegistry icons={EvaIconsPack}/>
         <SafeAreaView style={defaultstyles.main}>
@@ -121,6 +122,7 @@ const App = () => {
 
                 {/* Sub Pages for Settings */}
                 <Stack.Screen name="StorageSettings" component={StorageSettings} options={{headerShown:false}}></Stack.Screen>
+                <Stack.Screen name="Themes" component={Themes} options={{headerShown:false}}></Stack.Screen>
 
                 {/* Sub Pages for Analytics */}
                 <Stack.Screen name="SessionManager" component={SessionManager} options={{headerShown:false}}></Stack.Screen>

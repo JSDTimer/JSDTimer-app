@@ -1,14 +1,16 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text, StyleSheet, SafeAreaView, StatusBar ,Platform, ScrollView, Pressable, Button} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, StatusBar ,Platform, ScrollView, Pressable, Button, FlatList} from 'react-native';
 import { Button as KtButton, Text as KtText, useTheme } from '@ui-kitten/components';
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { iOSUIKit } from 'react-native-typography';
+import { LinearGradient } from 'expo-linear-gradient';
 
 /* User imports */
 import defaultstyles from '../styles/default';
 import { version } from '../global/globals';
 import { useSessionState } from '../global/store'
 import { clearEverything } from '../global/database';
+import { themes } from '../Themes/themeManager';
 
 
 const SettingsNav = (props) => {
@@ -46,6 +48,10 @@ const Settings = (props) => {
         navigation.navigate("StorageSettings");
     }
 
+    function navigateToThemes() {
+        navigation.navigate("Themes");
+    }
+
     return (
         <View style={defaultstyles.main}>
             <SettingsNav navigation={navigation}></SettingsNav>
@@ -53,7 +59,7 @@ const Settings = (props) => {
             <View style={styles.parentview}>
                 <ScrollView style={styles.scrollview}>
                     <View style={[styles.settingsContainer]}>
-                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="animation" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Themes</Text></View></Pressable>
+                        <Pressable onPress={navigateToThemes}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="animation" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Themes</Text></View></Pressable>
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="apps" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Cube</Text></View></Pressable>
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="backup-table" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Storage</Text></View></Pressable>
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="app-settings-alt" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Settings</Text></View></Pressable>   
@@ -89,6 +95,58 @@ export const StorageSettings = (props) => {
                 <Text style={[defaultstyles.text, styles.settingsTitle, {marginBottom: 50}]}>Storage Settings</Text>
                 <Pressable style={[styles.storageButton]} onPress={clearStorage}><Text style={[defaultstyles.text, styles.settingsTitle]}>Clear Storage</Text></Pressable>
             </View>
+        </View>
+    )
+}
+
+const ThemeBlock = (props) => {
+    let { displayTheme } = props;
+    let navigation = props.navigation;
+    let db = useSessionState((state) => state.db);
+    let theme = useSessionState((state) => state.theme);
+    let changeTheme = useSessionState((state) => state.changeTheme);
+
+
+    let currentThemeObj = themes[displayTheme];
+
+    function blockPressed() {
+        db.setString("Theme", displayTheme);
+        changeTheme(displayTheme);
+        navigation.navigate("Main");
+    }
+
+    return (
+        <Pressable onPress={blockPressed}>
+            <View style={[styles.themeBlock]}>
+                <LinearGradient
+                    colors={[currentThemeObj["color-primary-200"], currentThemeObj["color-primary-500"], currentThemeObj["color-primary-900"]]}
+                    style={{padding: 35, alignItems: 'center', borderRadius: 40,}}
+                >
+                </LinearGradient>
+                {/* Change this later make the styling better and more organized honestly change ALL THE STYLING FOR EVERY COMPONENT but later*/}
+                <Text style={[defaultstyles.text, {fontSize: 25, fontWeight: "bold", padding: 20, color: theme === displayTheme ? "green": "white"}]}>{ displayTheme }</Text>
+            </View>
+        </Pressable>
+    )
+}
+
+export const Themes = (props) => {
+    let navigation = props.navigation;
+
+
+    let data = Object.keys(themes);
+
+
+    return (
+        <View style={defaultstyles.main}>
+            <SettingsNav navigation={navigation}></SettingsNav>
+            <Text style={[defaultstyles.text, iOSUIKit.largeTitleEmphasizedWhite, {margin: 30}]}>Themes</Text>
+            <FlatList
+            data={data}
+            numColumns={1}
+            horizontal={false}
+            renderItem={({item}) => <ThemeBlock navigation={navigation} displayTheme={item}></ThemeBlock>}
+            ></FlatList>
         </View>
     )
 }
@@ -155,7 +213,17 @@ const styles = StyleSheet.create({
         borderRadius: 4,
         elevation: 3,
         backgroundColor: "red",
-    }
+    },
+    themeBlock: {
+        display: "flex",
+        flexDirection: "row",
+        backgroundColor: "rgba(100, 100, 100, 0.3)",
+        borderRadius: 10,
+        height: "auto",
+        width: "100%",
+        marginTop: 10,
+        padding: 20,
+    },
 })
 
 export default Settings;

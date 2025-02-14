@@ -8,6 +8,11 @@ db = dbCreate("JSDStore");
 let showChangelog = false;
 
 
+//Check if Theme already exists if not set it
+if(!db.getString("Theme")) {
+    db.setString("Theme", "defaultTheme");
+}
+
 //Check if sessionID already exists if not set it
 if(!db.getInt("sessionID")) {
     db.setInt("sessionID", 1);
@@ -39,6 +44,7 @@ console.log(db.getArray("sessions"))
 
 let sessionsDB = db.getArray("sessions");
 let sessionID = db.getInt("sessionID");
+let selectedTheme = db.getString("Theme");
 
 //Current selected session at start of app launch
 let startSession = new Session(sessionsDB[sessionID - 1].sessionID, sessionsDB[sessionID - 1].analytics.LyticsData.data, sessionsDB[sessionID - 1].name);
@@ -48,6 +54,7 @@ export const useSessionState = create((set) => ({
     sessionID: sessionID,
     sessions: sessionsDB,
     db: db,
+    theme: selectedTheme,
     //Analytics stuff
     ao5: startSession.analytics.ao5(),
     ao12: startSession.analytics.ao12(),
@@ -62,7 +69,9 @@ export const useSessionState = create((set) => ({
     changeSessionsArray: (newArray) => {
         return set((state) => ({sessions: newArray}))
     },
-
+    changeTheme: (newTheme) => {
+        return set((state) => ({theme: newTheme}));
+    },
     //Analytics stuff
     updateAnalytics(s) {
         return set((state) => ({
