@@ -56,9 +56,14 @@ const Settings = (props) => {
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="animation" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Themes</Text></View></Pressable>
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="apps" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Cube</Text></View></Pressable>
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="backup-table" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Storage</Text></View></Pressable>
-                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="app-settings-alt" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Settings</Text></View></Pressable>
+                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="app-settings-alt" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Settings</Text></View></Pressable>   
                     </View>
                 </ScrollView>
+            </View>
+            <View style={[{display: "flex", flexDirection: "row", margin: 20, justifyContent: "center"}]}>
+                <Text style={{color: "rgb(255, 255, 255)", textAlign: "center"}}>© </Text>
+                <Text style={{color: currentTheme["color-primary-500"], textAlign: "center"}}>JSD </Text>
+                <Text style={{color: "rgb(255, 255, 255)", textAlign: "center"}}>Timer</Text>
             </View>
         </View>
     )
