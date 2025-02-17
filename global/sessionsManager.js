@@ -140,4 +140,10 @@ class Stack {
     pop() {
         return this.data.pop();
     }
+
+    remove(index) {
+        let actualIndex = this.data.length - (1 + index);
+
+        this.data = this.data.filter((_, index) => index != actualIndex);
+    }
 }

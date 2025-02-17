@@ -4,6 +4,7 @@ import { Button as KtButton, Text as KtText, useTheme } from '@ui-kitten/compone
 import Icon from 'react-native-vector-icons/MaterialIcons';
 import { iOSUIKit } from 'react-native-typography';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 /* User imports */
 import defaultstyles from '../styles/default';
@@ -45,10 +46,12 @@ const Settings = (props) => {
     let currentTheme = useTheme();
 
     function navigateToStorage() {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         navigation.navigate("StorageSettings");
     }
 
     function navigateToThemes() {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
         navigation.navigate("Themes");
     }
 

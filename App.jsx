@@ -7,6 +7,7 @@ import { ApplicationProvider, IconRegistry, useTheme  } from '@ui-kitten/compone
 import { themes, ThemeContext } from './Themes/themeManager';
 import { EvaIconsPack } from '@ui-kitten/eva-icons';
 import * as cubesrambler from "cube-scramble.js";
+import * as Haptics from 'expo-haptics';
 
 /* User imports */
 import defaultstyles from './styles/default';
@@ -61,6 +62,7 @@ const Main = (props) => {
 
   // Function to generate new scramble on screen press
   const handleScreenPress = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setScramble(cubesrambler.scramble(currentCubeType.toLowerCase()));
   };
 

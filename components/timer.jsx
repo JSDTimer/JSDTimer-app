@@ -3,7 +3,8 @@ import { View, Text, StyleSheet } from 'react-native';
 import { iOSUIKit } from 'react-native-typography';
 import defaultstyles from '../styles/default';
 import { useSessionState } from '../global/store'
-import { Data, Session } from "../global/sessionsManager"
+import { Data, Session } from "../global/sessionsManager";
+import * as Haptics from 'expo-haptics';
 
 const Timer = (props) => {
     let pressMethod = props.onPress;
@@ -27,6 +28,7 @@ const Timer = (props) => {
 
     //Timer controller, controlling stop and start times
     function TimerControl() {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
         if (timerStartedForUseEffect.current) {
             // Stop the timer
             elapsed.current += Date.now() - startTime.current;
