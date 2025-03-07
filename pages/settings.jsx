@@ -55,6 +55,11 @@ const Settings = (props) => {
         navigation.navigate("Themes");
     }
 
+    function navigateToAbout() {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+        navigation.navigate("Themes");
+    }
+
     return (
         <View style={defaultstyles.main}>
             <SettingsNav navigation={navigation}></SettingsNav>
@@ -67,6 +72,10 @@ const Settings = (props) => {
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="backup-table" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Storage</Text></View></Pressable>
                         <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="app-settings-alt" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Settings</Text></View></Pressable>   
                     </View>
+                    <View style={[styles.settingsContainer, {marginTop: 20}]}>
+                        <Pressable onPress={navigateToAbout}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="info" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Info & About</Text></View></Pressable>
+                        <Pressable onPress={navigateToStorage}><View style={[styles.settingsChild, styles.settingPressable]}><Icon name="announcement" size={30} color={currentTheme["color-primary-500"]} style={styles.iconNext}></Icon><Text style={[defaultstyles.text, styles.settingsTitle]}>Changelog</Text></View></Pressable>
+                    </View>              
                 </ScrollView>
             </View>
             <View style={[{display: "flex", flexDirection: "row", margin: 20, justifyContent: "center"}]}>
