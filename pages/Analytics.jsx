@@ -141,6 +141,7 @@ const Analytics = (props) => {
     let ao12 = useSessionState((state) => state.ao12);
     let mean = useSessionState((state) => state.mean);
     let solves = useSessionState((state) => state.solves);
+    let bestSingle = useSessionState((state) => state.bestSingle);
     let graphData = useSessionState((state) => state.graphData);
 
 
@@ -207,11 +208,11 @@ const Analytics = (props) => {
                         <CartesianChart data={graphData} 
                         xKey="solveNum"  
                         yKeys={["time"]} 
-                        padding={10} 
+                        padding={25}
                         xAxis={{font: font, labelColor: "#FFFFFF"}} 
                         yAxis={[{yKeys: ["time"], font: font, labelColor: "#FFFFFF"}]} 
                         frame={{lineColor: currentTheme["color-primary-500"], lineWidth: {left: 1, bottom: 1, top: 0, right: 0}}}
-                        domainPadding={10}
+                        domainPadding={{top: 20, bottom: 20}}
                         >
                             {({points}) => (
                                 <Line points={points.time} color={currentTheme["color-primary-500"]} strokeWidth={5} curveType="natural"></Line>
@@ -219,6 +220,10 @@ const Analytics = (props) => {
                         </CartesianChart>
                     )}
                 </View>
+                <SafeAreaView style={[styles.basicStats]}>
+                    <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.statText, {color: currentTheme["color-primary-500"]}]}>BEST SINGLE</KtText>
+                    <KtText style={[iOSUIKit.largeTitleEmphasizedWhite, styles.statText]}>{ bestSingle.toFixed(3) != 0? bestSingle.toFixed(3): "-" }</KtText>
+                </SafeAreaView>
                 <SafeAreaView style={[styles.buttonTopCont]}>
                     <KtButton style={[{width: "45%"}, styles.tinyButtons]} onPress={timesClicked}>{evaProps => <View style={[styles.iconTextCont]}><Icon name="access-time" size={30} color={currentTheme["color-warning-100"]} style={[styles.subIcon]}></Icon><Text {...evaProps} style={[styles.buttonText, {paddingRight: 20}]}>Times</Text></View>}</KtButton>
                     <KtButton style={[{width: "45%"}, styles.tinyButtons]} onPress={sessionCreationClicked}>{evaProps => <View style={[styles.iconTextCont]}><Icon name="add" size={30} color={currentTheme["color-warning-100"]} style={[styles.subIcon]}></Icon><Text {...evaProps} style={[styles.buttonText, {paddingRight: 20}]}>New Session</Text></View>}</KtButton>
