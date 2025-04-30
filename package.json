@@ -10,6 +10,7 @@
     "test": "jest"
   },
   "dependencies": {
+    "-": "^0.0.1",
     "@eva-design/eva": "^2.2.0",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/native": "^6.1.17",
@@ -24,6 +25,8 @@
     "expo-haptics": "~12.4.0",
     "expo-linear-gradient": "~12.3.0",
     "expo-three": "^7.0.0",
+    "g": "^2.0.1",
+    "npm": "^11.3.0",
     "react": "18.2.0",
     "react-native": "0.72.3",
     "react-native-gesture-handler": "2.9.0",
